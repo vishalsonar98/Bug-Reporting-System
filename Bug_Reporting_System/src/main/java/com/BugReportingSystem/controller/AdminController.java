@@ -69,6 +69,7 @@ public class AdminController {
 	public String dashboard(Model m)
 	{
 		m.addAttribute("title","Dashboard");
+		m.addAttribute("empcount",ser.empCount());
 		return "Dashboard";
 	}
 	

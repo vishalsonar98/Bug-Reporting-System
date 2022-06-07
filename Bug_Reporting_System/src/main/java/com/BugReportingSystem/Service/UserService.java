@@ -15,4 +15,6 @@ public interface UserService {
 	User getUserById(int id);
 
 	void deleteUserById(int id);
+	
+	int empCount();
 }
