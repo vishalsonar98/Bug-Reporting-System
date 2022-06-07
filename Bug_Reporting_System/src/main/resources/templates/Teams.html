@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="Header::layout(~{::table})">
+<head>
+<meta charset="ISO-8859-1">
+<title></title>
+</head>
+<body>
+	<div th:fragment="table" class="main-panel">
+		<div class="content-wrapper">
+			<div class="row">
+				<div class="col-lg-12 grid-margin stretch-card">
+					<div class="card">
+						<div class="card-body">
+							<h4 class="card-title">Current Projects</h4>
+							<p class="card-description">
+								Current running projects
+								<code>with status</code>
+							</p>
+							<div class="table-responsive">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>Team Name</th>
+											<th>Team Member</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="py-1">Team Alpha</td>
+											<td>
+												<!-- <table>
+													<tr>
+														<td>vishal sonar</td>
+													</tr>
+													<tr>
+														<td>Chaitanya Patil</td>
+													</tr>
+													<tr>
+														<td>Bhavesh Gurav</td>
+													</tr>
+													<tr>
+														<td>Milind Patil</td>
+													</tr>
+												</table> -->
+												<a class="btn btn-primary" href="#">Show</a>
+											</td>
+											<td><a class="btn btn-success" href="#">Update</a>
+												&nbsp; <a class="btn btn-danger" href="#">Delete</a></td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

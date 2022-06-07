@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="Header::layout(~{::form})">
+<head>
+<meta charset="ISO-8859-1">
+<title></title>
+</head>
+<body>
+	<div th:fragment="form" class="main-panel" >
+		<div class="content-wrapper">
+			<div class="row">
+				<div class=" col-md-12 grid-margin stretch-card ">
+					<div class="card">
+						<div class="card-body">
+							<h4 class="card-title">Employee Registration</h4>
+							<p class="card-description">Fill All Fields</p>
+							<form onsubmit="return confirm('Do you really want to submit the information?');" class="forms-sample" th:action="@{/addemployee/add}" th:method="post" th:object="${user}">
+								<div class="form-group">
+									<label for="exampleInputUsername1">First Name</label> 
+									<input
+										type="text" class="form-control" id="firstName"
+										placeholder="First Name" name="firstName" required>
+								</div>
+								<div class="form-group">
+									<label for="exampleInputEmail1">Last Name</label> <input
+										type="text" class="form-control" id="lastName"
+										placeholder="Last Name" name="lastName" required>
+								</div>
+								<div class="form-group">
+									<label for="exampleInputPassword1">Email address</label> 
+									<input name="email" type="text" class="form-control" id="email" placeholder="Email address" required>
+								</div>
+								<div class="form-group">
+									<label for="exampleFormControlSelect3">Designation</label> 
+									<select name="Role" class="form-control form-control-sm" id="designation">
+										<option value="101" >Developer</option>
+										<option value="102" >QA</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="exampleInputConfirmPassword1">Password </label> 
+									<input name="password" type="password" class="form-control" id="password" placeholder="Password" required>
+								</div>
+
+								<button type="submit" class="btn btn-primary me-2">Submit</button>
+								<button type="reset" class="btn btn-light">Clear</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+</div>
+</body>
+</html>
