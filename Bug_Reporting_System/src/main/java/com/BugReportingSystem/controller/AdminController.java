@@ -13,25 +13,48 @@ import com.BugReportingSystem.Entity.User;
 import com.BugReportingSystem.Entity.UserRole;
 import com.BugReportingSystem.Service.UserService;
 
+/*
+* Admin Controller controls all the request from the admin panel and
+* provides response or request mapping for each request. 
+*/
 @Controller
 public class AdminController {
 	
+	/*
+	 * Object Ref. of UserService interface which provides various methods to
+	 * perform crud operations
+	 */
 	UserService ser;
-	
+
+	/*
+	 * Paramiterized constructor which provides object to 'ser' ref.
+	 */
 	public AdminController(UserService ser) {
 		this.ser = ser;
 	}
+
+	/*
+	 * Navigation bar HTML request mapping.
+	 */
 	@GetMapping("/Header")
 	public String home()
 	{
 		return "Header";
 	}
+
+	/*
+	 * Admin signin Request Mapping.
+	 */
 	@RequestMapping("/signin")
 	public String signIn()
 	{
 		
 		return "login";
 	}
+	
+	/*
+	 * Current Projects Request Mapping.
+	 */
 	@GetMapping("/currentprojects")
 	public String currentProjects(Model m)
 	{
@@ -39,13 +62,19 @@ public class AdminController {
 		return "CurrentProjects";
 	}
 	
+	/*
+	 * Admin Dashboard Request Mapping.
+	 */
 	@GetMapping("/dashboard")
 	public String dashboard(Model m)
 	{
 		m.addAttribute("title","Dashboard");
 		return "Dashboard";
 	}
-
+	
+	/*
+	 * Employees Page Request Mapping.
+	 */
 	@GetMapping("/employees")
 	public String employees(Model m)
 	{
@@ -53,6 +82,10 @@ public class AdminController {
 		m.addAttribute("users",ser.getAllUser());
 		return "Employees";
 	}
+	
+	/*
+	 * Add employee page Request Mapping.
+	 */
 	@GetMapping("/addemployee")
 	public String addEmployee(Model m)
 	{
@@ -60,6 +93,12 @@ public class AdminController {
 		m.addAttribute("title","Add Employee");
 		return "AddEmployee";
 	}
+	
+	/*
+	 * When admin press submit button of form this request send by browser.
+	 * This Request saves the information of new employee.
+	 * After saving data admin get redirected to employees page.
+	 */
 	@PostMapping("/addemployee/add")
 	public String addemployeeimp(@ModelAttribute("user") User user,@RequestParam("Role") int role,UserRole userRole) //Core pojo
 	{
@@ -70,21 +109,39 @@ public class AdminController {
 		
 		return "redirect:/employees";
 	}
-	
+
+	/*
+	 * if admin press Delete button of Employees page this request send by browser.
+	 * This Request deletes data of particular employee and id of that employee passed
+	 * in request.
+	 * This method performs delete action by using methods of UserServises Interface.
+	 */
 	@GetMapping("/employee/{id}")
 	public String deleteUser(@PathVariable int id)
 	{
 		ser.deleteUserById(id);
 		return "redirect:/employees";
 	}
-	
+
+	/*
+	 * If admin press Update button of Employee page this request is send by
+	 * browser.
+	 * In this request we provied 'id' of perticular employee and then
+	 * assign that id to Model attribute after that we redirects admin to
+	 * UpdateEmployee page.
+	 */
 	@RequestMapping("/employee/update/{id}")
 	public String updateEmp(@PathVariable int id,Model m)
 	{
 		m.addAttribute("employee",ser.getUserById(id));
 		return "UpdateEmployee";
 	}
-	
+
+	/*
+	 * This method provides functionality of update data of employees or users.
+	 * First we fatch all the data of employee from the form and then insert those data in databse
+	 * by using 'saveUser' method of UserService Interface.
+	 */
 	@PostMapping("/employee/{id}")
 	public String updateEmployee(@ModelAttribute("employee") User user, @PathVariable int id,Model m,@RequestParam("Role") int role,UserRole userRole)
 	{
