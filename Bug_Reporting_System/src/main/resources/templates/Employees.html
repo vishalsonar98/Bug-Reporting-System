@@ -33,7 +33,7 @@
 													<td th:text="${user.email}"></td>
 													<td th:text="${user.password}"></td>
 													<td th:text="${user.userTypeId.userType}"></td>
-													<td><a class="btn btn-success" th:href="@{/employee/update/{id}(id=${user.id})}">Update</a> &nbsp; <a class="btn btn-danger" th:href="@{employee/{id}(id=${user.id})}">Delete</a></td>
+													<td><a class="btn btn-success" th:href="@{/admin/employee/update/{id}(id=${user.id})}">Update</a> &nbsp; <a class="btn btn-danger" th:href="@{/admin/employee/{id}(id=${user.id})}">Delete</a></td>
 												</tr>
 
 											</tbody>

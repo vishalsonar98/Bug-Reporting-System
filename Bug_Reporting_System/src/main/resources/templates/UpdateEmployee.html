@@ -19,7 +19,7 @@
 							<p class="card-description">Fill All Fields</p>
 							<form
 								onsubmit="return confirm('Do you really want to Update the information?');"
-								class="forms-sample" th:action="@{/employee/{id}(id=${employee.id})}"
+								class="forms-sample" th:action="@{/admin/employee/{id}(id=${employee.id})}"
 								th:method="post" th:object="${employee}">
 								<div class="form-group">
 									<label for="exampleInputUsername1">First Name</label> <input

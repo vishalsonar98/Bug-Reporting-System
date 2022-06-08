@@ -14,7 +14,7 @@
 						<div class="card-body">
 							<h4 class="card-title">Employee Registration</h4>
 							<p class="card-description">Fill All Fields</p>
-							<form onsubmit="return confirm('Do you really want to submit the information?');" class="forms-sample" th:action="@{/addemployee/add}" th:method="post" th:object="${user}">
+							<form onsubmit="return confirm('Do you really want to submit the information?');" class="forms-sample" th:action="@{/admin/addemployee/add}" th:method="post" th:object="${user}">
 								<div class="form-group">
 									<label for="exampleInputUsername1">First Name</label> 
 									<input

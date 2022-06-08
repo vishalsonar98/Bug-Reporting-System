@@ -1,5 +1,7 @@
 package com.BugReportingSystem.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,17 @@ import com.BugReportingSystem.Service.UserService;
 * provides response or request mapping for each request. 
 */
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@RequestMapping("/")
+	public String index()
+	{
+		return "redirect:/admin/dashboard";
+	}
 	
 	/*
 	 * Object Ref. of UserService interface which provides various methods to
@@ -42,15 +54,6 @@ public class AdminController {
 		return "Header";
 	}
 
-	/*
-	 * Admin signin Request Mapping.
-	 */
-	@RequestMapping("/signin")
-	public String signIn()
-	{
-		
-		return "login";
-	}
 	
 	/*
 	 * Current Projects Request Mapping.
@@ -105,10 +108,11 @@ public class AdminController {
 	{
 		userRole.setUserTypeId(role);
 		user.setUserTypeId(userRole);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		System.out.println(user);
 		ser.saveUser(user);
 		
-		return "redirect:/employees";
+		return "redirect:/admin/employees";
 	}
 
 	/*
@@ -121,7 +125,7 @@ public class AdminController {
 	public String deleteUser(@PathVariable int id)
 	{
 		ser.deleteUserById(id);
-		return "redirect:/employees";
+		return "redirect:/admin/employees";
 	}
 
 	/*
@@ -150,14 +154,14 @@ public class AdminController {
 		existinguser.setFirstName(user.getFirstName());
 		existinguser.setLastName(user.getLastName());
 		existinguser.setEmail(user.getEmail());
-		existinguser.setPassword(user.getPassword());
+		existinguser.setPassword(passwordEncoder.encode(user.getPassword()));
 		
 		userRole.setUserTypeId(role);
 		user.setUserTypeId(userRole);
 		
 		existinguser.setUserTypeId(user.getUserTypeId());
 		ser.saveUser(existinguser);
-		return "redirect:/employees";
+		return "redirect:/admin/employees";
 	}
 	
 	@RequestMapping("/teams")

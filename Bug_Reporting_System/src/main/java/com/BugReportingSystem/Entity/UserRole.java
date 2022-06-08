@@ -11,6 +11,7 @@ public class UserRole {
 	private int userTypeId;
 	@Column(name="user_type")
 	private String userType;
+	
 	public int getUserTypeId() {
 		return userTypeId;
 	}
