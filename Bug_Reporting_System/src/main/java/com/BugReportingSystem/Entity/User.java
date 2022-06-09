@@ -9,9 +9,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+/*
+* User entity to store information of user inside database
+*/
 @Entity
+/*
+ * changing name of table inside database
+ */
 @Table(name="user")
 public class User {
+	/*
+	 * defining fields of user entity
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -22,12 +31,18 @@ public class User {
 	@Column(unique = true)
 	private String email;
 	private String password;
-	
+	/*
+	 * One to one mapping with UserRole entity to store the user Role information in
+	 * user table
+	 */
 	@OneToOne
 	@JoinColumn(name="userTypeId")
 	private UserRole userTypeId;
 
-
+	/*
+	 * Getter and Setter method to get and set data of fields.
+	 * @ return corresponding field
+	 */
 	public int getId() {
 		return id;
 	}
@@ -87,7 +102,9 @@ public class User {
 		this.userTypeId = userTypeId;
 	}
 
-
+	/*
+	 * parameterized constructor to set data in fields of entity
+	 */
 	public User(int id, String firstName, String lastName, String email, String password, UserRole userTypeId) {
 		super();
 		this.id = id;
@@ -98,12 +115,18 @@ public class User {
 		this.userTypeId = userTypeId;
 	}
 
-
+	/*
+	 * default constructor
+	 */
 	public User() {
 		
 	}
 
-
+	/*
+	 * overriding toString method to print data
+	 * 
+	 * @return String
+	 */
 	@Override
 	public String toString() {
 		return "UserEntity [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email

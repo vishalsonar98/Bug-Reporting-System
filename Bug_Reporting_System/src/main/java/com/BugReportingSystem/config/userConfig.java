@@ -49,7 +49,7 @@ public class userConfig extends WebSecurityConfigurerAdapter{
 	  .antMatchers("/tester/**").hasRole("QA")
 	  .antMatchers("/**").permitAll().and()
 	  .formLogin().loginPage("/signin")
-	  .defaultSuccessUrl("/admin/dashboard")
+	  .defaultSuccessUrl("/")
 	  .and().csrf().disable(); }
 	 
 	
