@@ -33,22 +33,19 @@
 								</div>
 								<div class="form-group">
 									<label for="exampleInputPassword1">Email address</label> 
-									<input name="email" th:field="*{email}"  type="text" class="form-control" id="email"
+									<input name="email" th:field="*{email}"  type="email" class="form-control" id="email"
 										placeholder="Email address" required>
 								</div>
 								<div class="form-group">
 									<label for="exampleFormControlSelect3">Designation</label> 
 									<select name="Role" class="form-control form-control-sm"
 										id="designation">
+										 <option value="none" selected disabled hidden>Select Role</option>
 										<option value="101">Developer</option>
 										<option value="102">QA</option>
 									</select>
 								</div>
-								<div class="form-group">
-									<label for="exampleInputConfirmPassword1">Password </label> 
-									<input name="password" th:field="*{password}" type="password" class="form-control"
-										id="password" placeholder="Password" required>
-								</div>
+								
 
 								<button type="submit" class="btn btn-primary me-2">Update</button>
 								<button type="reset" class="btn btn-light">Clear</button>

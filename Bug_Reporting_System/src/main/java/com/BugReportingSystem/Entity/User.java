@@ -1,17 +1,25 @@
 package com.BugReportingSystem.Entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 /*
-* User entity to store information of user inside database
-*/
+ * User entity to store information of user inside database
+ */
 @Entity
 /*
  * changing name of table inside database
@@ -25,12 +33,17 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(name="first_name")
+	
 	private String firstName;
+	
 	@Column(name="last_name")
 	private String lastName;
 	@Column(unique = true)
+	@Email()
 	private String email;
+
 	private String password;
+	
 	/*
 	 * One to one mapping with UserRole entity to store the user Role information in
 	 * user table
@@ -38,13 +51,16 @@ public class User {
 	@OneToOne
 	@JoinColumn(name="userTypeId")
 	private UserRole userTypeId;
-
+	
+	@ManyToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+//	@JoinTable(name="user_team",joinColumns = {@JoinColumn(name="user_id")},inverseJoinColumns = {@JoinColumn(name="team_id")})
+	private List<Team> team;
 	/*
 	 * Getter and Setter method to get and set data of fields.
 	 * @ return corresponding field
 	 */
 	public int getId() {
-		return id;
+		return id ;
 	}
 
 
@@ -101,11 +117,25 @@ public class User {
 	public void setUserTypeId(UserRole userTypeId) {
 		this.userTypeId = userTypeId;
 	}
+	
+
+	public List<Team> getTeam() {
+		return team;
+	}
+
+
+	public void setTeam(List<Team> team) {
+		this.team = team;
+	}
+
 
 	/*
 	 * parameterized constructor to set data in fields of entity
 	 */
-	public User(int id, String firstName, String lastName, String email, String password, UserRole userTypeId) {
+	
+	
+	public User(int id, String firstName, String lastName, @Email String email, String password, UserRole userTypeId,
+			List<Team> team) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -113,7 +143,9 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.userTypeId = userTypeId;
+		this.team = team;
 	}
+
 
 	/*
 	 * default constructor
@@ -129,8 +161,10 @@ public class User {
 	 */
 	@Override
 	public String toString() {
-		return "UserEntity [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", password=" + password + ", userTypeId=" + userTypeId + "]";
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", password=" + password + ", userTypeId=" + userTypeId + ", team=" + team + "]";
 	}
+
+	
 	
 }

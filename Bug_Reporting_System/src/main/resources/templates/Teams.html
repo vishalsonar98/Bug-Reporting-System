@@ -12,23 +12,25 @@
 				<div class="col-lg-12 grid-margin stretch-card">
 					<div class="card">
 						<div class="card-body">
-							<h4 class="card-title">Current Projects</h4>
+							<h4 class="card-title">Teams</h4>
 							<p class="card-description">
-								Current running projects
-								<code>with status</code>
+								Currently Active
+								<code>Teams</code>
 							</p>
 							<div class="table-responsive">
 								<table class="table table-striped">
 									<thead>
 										<tr>
 											<th>Team Name</th>
+											<th>Add Member</th>
 											<th>Team Member</th>
 											<th>Action</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="py-1">Team Alpha</td>
+										<tr th:each="e : ${teams}">
+											<td class="py-1"><span th:text="${e.teamName}"></span></td>
+											<td><a class="btn btn-dark" th:href="@{/admin/team/addemployee/{id}(id=${e.id})}" ><i class="mdi mdi-plus"></i></a></td>
 											<td>
 												<!-- <table>
 													<tr>
@@ -44,14 +46,15 @@
 														<td>Milind Patil</td>
 													</tr>
 												</table> -->
-												<a class="btn btn-primary" href="#">Show</a>
+												<a class="btn btn-info" th:href="@{/admin/team/showmem/{id}(id=${e.id})}"><i class="mdi mdi-eye"></i></a>
 											</td>
-											<td><a class="btn btn-success" href="#">Update</a>
-												&nbsp; <a class="btn btn-danger" href="#">Delete</a></td>
+											<td><a class="btn btn-success" th:href="@{/admin/team/rename/{id}(id=${e.id})}"><i><i class="mdi mdi-rename-box"></i></i></a>
+												&nbsp; <a class="btn btn-danger" th:href="@{/admin/team/delete/{id}(id=${e.id})}"><i  class="mdi mdi-delete"></i></a></td>
 										</tr>
 
 									</tbody>
 								</table>
+								
 							</div>
 						</div>
 					</div>

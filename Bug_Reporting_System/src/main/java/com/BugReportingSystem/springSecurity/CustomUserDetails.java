@@ -1,4 +1,4 @@
-package com.BugReportingSystem.config;
+package com.BugReportingSystem.springSecurity;
 
 import java.util.Collection;
 import java.util.List;

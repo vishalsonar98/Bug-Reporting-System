@@ -2,6 +2,7 @@ package com.BugReportingSystem.Service.Impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.BugReportingSystem.Entity.User;
@@ -18,14 +19,12 @@ public class UserServiceImpl implements UserService {
 	/*
 	 * object ref. to UserRepository
 	 */
+	@Autowired
 	UserRepository userRepo;
 
 	/*
 	 * UserServiceImpl class constructor to initialize object to userRepo ref.
 	 */
-	public UserServiceImpl(UserRepository obj) {
-		this.userRepo=obj;
-	}
 
 	/*
 	 * overriding all the methods of UserService interface
@@ -70,7 +69,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public User getUserById(int id) {
-		// TODO Auto-generated method stub
+		
 		return userRepo.findById(id).get();
 	}
 	

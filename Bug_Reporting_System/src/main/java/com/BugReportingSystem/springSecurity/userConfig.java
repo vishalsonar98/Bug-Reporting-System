@@ -1,4 +1,4 @@
-package com.BugReportingSystem.config;
+package com.BugReportingSystem.springSecurity;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -22,7 +22,7 @@
 												<tr>
 													<th>Name</th>
 													<th>Email</th>
-													<th>Password</th>
+													
 													<th>User Type</th>
 													<th>Action</th>
 												</tr>
@@ -31,9 +31,8 @@
 												<tr th:each="user:${users}">
 													<td class="py-1" ><span th:text="${user.firstName}"></span>&nbsp;&nbsp;<span th:text="${user.lastName}"></span></td>
 													<td th:text="${user.email}"></td>
-													<td th:text="${user.password}"></td>
 													<td th:text="${user.userTypeId.userType}"></td>
-													<td><a class="btn btn-success" th:href="@{/admin/employee/update/{id}(id=${user.id})}">Update</a> &nbsp; <a class="btn btn-danger" th:href="@{/admin/employee/{id}(id=${user.id})}">Delete</a></td>
+													<td><a class="btn btn-success" th:href="@{/admin/employee/update/{id}(id=${user.id})}">Update</a> &nbsp;<a class="btn btn-primary" th:href="@{/}">Change Password</a> &nbsp;<a class="btn btn-danger" th:href="@{/admin/employee/{id}(id=${user.id})}">Delete</a>  </td>
 												</tr>
 
 											</tbody>

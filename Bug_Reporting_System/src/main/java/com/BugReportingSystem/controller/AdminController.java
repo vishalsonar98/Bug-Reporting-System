@@ -1,9 +1,12 @@
 package com.BugReportingSystem.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,8 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.BugReportingSystem.Entity.Team;
 import com.BugReportingSystem.Entity.User;
 import com.BugReportingSystem.Entity.UserRole;
+import com.BugReportingSystem.Service.TeamService;
 import com.BugReportingSystem.Service.UserService;
 
 /*
@@ -28,6 +33,20 @@ public class AdminController {
 	 */
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	/*
+	 * Object Ref. of UserService interface which provides various methods to
+	 * perform crud operations
+	 */
+	@Autowired
+	UserService ser;
+	
+	@Autowired
+	private TeamService teamser;
+
+	public AdminController() {
+	
+	}
 
 	/*
 	 * Request mappign for "/" 
@@ -39,18 +58,6 @@ public class AdminController {
 		return "redirect:/admin/dashboard";
 	}
 	
-	/*
-	 * Object Ref. of UserService interface which provides various methods to
-	 * perform crud operations
-	 */
-	UserService ser;
-
-	/*
-	 * Paramiterized constructor which provides object to 'ser' ref.
-	 */
-	public AdminController(UserService ser) {
-		this.ser = ser;
-	}
 
 	/*
 	 * Navigation bar HTML request mapping.
@@ -83,6 +90,7 @@ public class AdminController {
 	{
 		m.addAttribute("title","Dashboard");
 		m.addAttribute("empcount",ser.empCount());
+		m.addAttribute("teamCount",teamser.teamCount());
 		return "Dashboard";
 	}
 	
@@ -93,7 +101,7 @@ public class AdminController {
 	@GetMapping("/employees")
 	public String employees(Model m)
 	{
-		m.addAttribute("title","Dashboard");
+		m.addAttribute("title","Employees");
 		m.addAttribute("users",ser.getAllUser());
 		return "Employees";
 	}
@@ -105,7 +113,7 @@ public class AdminController {
 	@GetMapping("/addemployee")
 	public String addEmployee(Model m)
 	{
-		
+		m.addAttribute("user",new User());
 		m.addAttribute("title","Add Employee");
 		return "AddEmployee";
 	}
@@ -117,8 +125,9 @@ public class AdminController {
 	 *  @return redirect request to "/admin/employees" 
 	 */
 	@PostMapping("/addemployee/add")
-	public String addemployeeimp(@ModelAttribute("user") User user,@RequestParam("Role") int role,UserRole userRole) //Core pojo
+	public String addemployeeimp(@ModelAttribute("user") User user,@RequestParam("Role") int role,UserRole userRole,Model m) //Core pojo
 	{
+		
 		userRole.setUserTypeId(role);
 		user.setUserTypeId(userRole);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -164,13 +173,14 @@ public class AdminController {
 	 *  @return redirect request to "/admin/employees"
 	 */
 	@PostMapping("/employee/{id}")
-	public String updateEmployee(@ModelAttribute("employee") User user, @PathVariable int id,Model m,@RequestParam("Role") int role,UserRole userRole)
+	public String updateEmployee( @ModelAttribute("employee") User user, @PathVariable int id,Model m,@RequestParam("Role") int role,UserRole userRole)
 	{
+		
 		User existinguser=ser.getUserById(id);
 		existinguser.setFirstName(user.getFirstName());
 		existinguser.setLastName(user.getLastName());
 		existinguser.setEmail(user.getEmail());
-		existinguser.setPassword(passwordEncoder.encode(user.getPassword()));
+//		existinguser.setPassword(passwordEncoder.encode(user.getPassword()));
 		
 		userRole.setUserTypeId(role);
 		user.setUserTypeId(userRole);
@@ -184,7 +194,72 @@ public class AdminController {
 	public String teams(Model m)
 	{
 		m.addAttribute("title","Teams");
+		m.addAttribute("teams",teamser.getAllTeams());
 		return "Teams";
+	}
+	
+	@RequestMapping("/addteam")
+	public String addTeam(Model m)
+	{
+		m.addAttribute("team",new Team());
+		return "AddTeam";
+	}
+	
+	@PostMapping("/addteam/add")
+	public String addTeamAdd(@ModelAttribute("team") Team team)
+	{
+		teamser.saveTeam(team);
+		return "redirect:/admin/teams";
+	}
+	
+	@GetMapping("/team/addemployee/{id}")
+	public String addEmployeeTeam(Model m,@PathVariable("id") int id)
+	{
+		m.addAttribute("employee",ser.getAllUser());
+		m.addAttribute("teamid",id);
+		return "AddEmpInTeam";
+	}
+	
+	@GetMapping("/team/addemployee/{id}/{teamid}")
+	public String AddEmployeeInTeam(@PathVariable("id") int empid,@PathVariable("teamid") int teamid)
+	{
+		User user=ser.getUserById(empid);
+		Team team=teamser.getTeamById(teamid);
+		
+		user.getTeam().add(team);
+		team.getUser().add(user);
+		
+		ser.saveUser(user);
+		teamser.saveTeam(team);
+		return "redirect:/admin/teams";
+	}
+	
+	@GetMapping("/team/showmem/{id}")
+	public String showMember(@PathVariable("id") int teamid,Model m)
+	{
+		
+		m.addAttribute("team",teamser.getTeamById(teamid).getUser());
+		return "ShowTeamMem";
+	}
+	@GetMapping("/team/delete/{id}")
+	public String deleteTeam(@PathVariable("id") int tid)
+	{
+		teamser.deleteTeamById(tid);
+		return "redirect:/admin/teams";
+	}
+	@GetMapping("/team/rename/{id}")
+	public String rename(Model m,@PathVariable("id") int tid)
+	{
+		m.addAttribute("team",teamser.getTeamById(tid));
+		
+		return "RenameTeam";
+	}
+	@PostMapping("/team/rename")
+	public String renameTeam(@ModelAttribute("team") Team team)
+	{
+		
+		teamser.saveTeam(team);
+		return "redirect:/admin/teams";
 	}
 }
 	
