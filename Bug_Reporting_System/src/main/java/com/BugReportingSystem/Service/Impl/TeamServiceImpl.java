@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.BugReportingSystem.Entity.Team;
+import com.BugReportingSystem.Entity.User;
 import com.BugReportingSystem.Repository.TeamRepository;
 import com.BugReportingSystem.Service.TeamService;
 
@@ -54,6 +55,12 @@ public class TeamServiceImpl implements TeamService{
 	public int teamCount() {
 		
 		return (int) teamRepo.count();
+	}
+
+	@Override
+	public List<Team> findAllByUser(User user) {
+		
+		return teamRepo.findAllByUser(user);
 	}
 
 }

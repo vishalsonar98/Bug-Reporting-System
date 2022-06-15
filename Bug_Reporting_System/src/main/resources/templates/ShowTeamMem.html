@@ -12,10 +12,10 @@
 				<div class="col-lg-12 grid-margin stretch-card">
 					<div class="card">
 						<div class="card-body">
-							<h4 class="card-title">Add Employee</h4>
+							<h4 class="card-title">Employees</h4>
 							<p class="card-description">
-								Add Employee
-								<code>Into Team</code>
+								Employees
+								<code>Under Team</code>
 							</p>
 							<div class="table-responsive">
 								<table class="table table-striped">
@@ -23,6 +23,7 @@
 										<tr>
 											<th>Employee Name</th>
 											<th>User Type</th>
+											<th>Remove</th>
 											
 
 										</tr>
@@ -32,6 +33,7 @@
 											<td class="py-1"><span th:text="${e.firstName}"></span>&nbsp;<span
 												th:text="${e.lastName}"></span></td>
 											<td><span th:text="${e.userTypeId.userType}"></span></td>
+											<td><a class="btn btn-danger" th:href="@{/admin/team/removemember/{id}/{teamid}(id=${e.id},teamid=${teamid})}"><i class="mdi mdi-minus"></i></a></td>
 											
 
 										</tr>

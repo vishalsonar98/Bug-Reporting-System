@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.BugReportingSystem.Entity.Team;
 import com.BugReportingSystem.Entity.User;
 import com.BugReportingSystem.Repository.UserRepository;
 import com.BugReportingSystem.Service.UserService;
@@ -102,6 +103,12 @@ public class UserServiceImpl implements UserService {
 	public User getUserByUserName(String email) {
 		
 		return userRepo.getUserByUserName(email);
+	}
+
+	@Override
+	public List<User> findAllByTeam(Team team) {
+		
+		return userRepo.findAllByTeam(team);
 	}
 	
 }

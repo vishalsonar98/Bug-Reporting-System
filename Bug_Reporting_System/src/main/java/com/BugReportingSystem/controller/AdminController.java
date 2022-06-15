@@ -1,5 +1,10 @@
 package com.BugReportingSystem.controller;
 
+import java.security.Principal;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +71,7 @@ public class AdminController {
 	@GetMapping("/Header")
 	public String home()
 	{
+		
 		return "Header";
 	}
 
@@ -86,12 +92,24 @@ public class AdminController {
 	 * @return Dashboard.html file path
 	 */
 	@GetMapping("/dashboard")
-	public String dashboard(Model m)
+	public String dashboard(Model m,Principal p)
 	{
+		User user=ser.getUserByUserName(p.getName());
+		m.addAttribute("name",user.getFirstName()+" "+user.getLastName());
+		m.addAttribute("email",user.getEmail());
+		m.addAttribute("dash",true);
 		m.addAttribute("title","Dashboard");
 		m.addAttribute("empcount",ser.empCount());
 		m.addAttribute("teamCount",teamser.teamCount());
+		
 		return "Dashboard";
+	}
+	
+	@RequestMapping("/profile/show")
+	public String adminProfile(Model m,Principal p)
+	{
+		m.addAttribute("admin",ser.getUserByUserName(p.getName()));
+		return "AdminProfile";
 	}
 	
 	/*
@@ -145,8 +163,20 @@ public class AdminController {
 	 *  @return redirect request to "/admin/employees"
 	 */
 	@GetMapping("/employee/{id}")
-	public String deleteUser(@PathVariable int id)
+	public String deleteEmployee(@PathVariable int id)
 	{
+		User user=ser.getUserById(id);
+		List<Team> teams=teamser.findAllByUser(user);
+		for (int i = 0; i < teams.size(); i++) 
+		{
+			Team team=teams.get(i);
+			team.getUser().remove(user);
+			user.getTeam().remove(team);
+			
+			teamser.saveTeam(team);
+			ser.saveUser(user);
+		}
+		
 		ser.deleteUserById(id);
 		return "redirect:/admin/employees";
 	}
@@ -215,7 +245,17 @@ public class AdminController {
 	@GetMapping("/team/addemployee/{id}")
 	public String addEmployeeTeam(Model m,@PathVariable("id") int id)
 	{
-		m.addAttribute("employee",ser.getAllUser());
+		Team team=teamser.getTeamById(id);
+		List<User> users=ser.getAllUser();
+		List<User> teamUsers=ser.findAllByTeam(team);
+		
+		for (int i = 0; i < teamUsers.size(); i++) 
+		{
+			User teamUser1=teamUsers.get(i);
+			users.remove(teamUser1);
+		}
+		
+		m.addAttribute("employee",users);
 		m.addAttribute("teamid",id);
 		return "AddEmpInTeam";
 	}
@@ -231,15 +271,27 @@ public class AdminController {
 		
 		ser.saveUser(user);
 		teamser.saveTeam(team);
-		return "redirect:/admin/teams";
+		return "redirect:/admin/team/addemployee/{teamid}";
 	}
 	
 	@GetMapping("/team/showmem/{id}")
 	public String showMember(@PathVariable("id") int teamid,Model m)
 	{
-		
+		m.addAttribute("teamid",teamid);
 		m.addAttribute("team",teamser.getTeamById(teamid).getUser());
 		return "ShowTeamMem";
+	}
+	@GetMapping("/team/removemember/{id}/{teamid}")
+	public String removeMember(@PathVariable("id") int id,@PathVariable("teamid") int teamid)
+	{
+		Team team=teamser.getTeamById(teamid);
+		User user=ser.getUserById(id);
+		
+		team.getUser().remove(user);
+		user.getTeam().remove(team);
+		ser.saveUser(user);
+		teamser.saveTeam(team);
+		return "redirect:/admin/team/showmem/{teamid}";
 	}
 	@GetMapping("/team/delete/{id}")
 	public String deleteTeam(@PathVariable("id") int tid)

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.BugReportingSystem.Entity.Team;
+import com.BugReportingSystem.Entity.User;
 
 @Component
 public interface TeamService {
@@ -22,4 +23,6 @@ public interface TeamService {
 	void deleteTeamById(int id);
 	
 	int teamCount();
+	
+	List<Team> findAllByUser(User user);
 }
