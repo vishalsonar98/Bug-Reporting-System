@@ -309,8 +309,10 @@ public class AdminController {
 	@PostMapping("/team/rename")
 	public String renameTeam(@ModelAttribute("team") Team team)
 	{
-		
+		List<User> user=ser.findAllByTeam(team);
+		team.setUser(user);
 		teamser.saveTeam(team);
+		
 		return "redirect:/admin/teams";
 	}
 }
