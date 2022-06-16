@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	th:replace="Header::layout(~{::section})">
+	th:replace="/developer/Navbar::layout(~{::section})">
 <head>
 <meta charset="ISO-8859-1">
 <title></title>
@@ -13,12 +13,12 @@
 					<div class="col-md-4 grid-margin stretch-card">
 						<div class="card">
 							<div class="card-body">
-								<h4 class="card-title">Total Number of Employees</h4>
+								<h4 class="card-title text-center">Teams</h4>
 								<div class="media">
 									<i
-										class="ti-user icon-md text-info d-flex align-self-start me-3"></i>
+										class="mdi mdi-account-multiple-outline icon-md text-info d-flex align-self-start me-3"></i>
 									<div class="media-body">
-										<h4 class="card-text "  th:text="${empcount}"></h4>
+										<h4 class="card-text "  th:text="${teams}"></h4>
 									</div>
 								</div>
 							</div>
@@ -28,10 +28,10 @@
 					<div class="col-md-4 grid-margin stretch-card">
 						<div class="card">
 							<div class="card-body">
-								<h4 class="card-title">Total Number of Teams</h4>
+								<h4 class="card-title text-center">Bugs</h4>
 								<div class="media">
 									<i
-										class="mdi mdi-account-multiple-outline icon-md text-info d-flex align-self-start me-3"></i>
+										class="mdi mdi-bug icon-md text-info d-flex align-self-start me-3"></i>
 									<div class="media-body">
 										<h4 class="card-text "  th:text="${teamCount}"></h4>
 									</div>
@@ -43,7 +43,7 @@
 					<div class="col-md-4 grid-margin stretch-card">
 						<div class="card">
 							<div class="card-body">
-								<h4 class="card-title">Total Number of Projects</h4>
+								<h4 class="card-title text-center">Projects</h4>
 								<div class="media">
 									<i
 										class="mdi mdi-arrange-send-backward icon-md text-info d-flex align-self-start me-3"></i>
