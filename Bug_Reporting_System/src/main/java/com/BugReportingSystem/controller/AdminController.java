@@ -108,7 +108,7 @@ public class AdminController {
 	@RequestMapping("/profile/show")
 	public String adminProfile(Model m,Principal p)
 	{
-		m.addAttribute("admin",ser.getUserByUserName(p.getName()));
+		m.addAttribute("user",ser.getUserByUserName(p.getName()));
 		return "AdminProfile";
 	}
 	

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="Header::layout(~{::table})">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="table" class="main-panel">
+		<div class="content-wrapper">
+			<div class="row">
+				<div class="offset-lg-2 col-lg-8 grid-margin stretch-card">
+					<div class="card">
+						<div class="card-body">
+							<p  class="card-title text-center mt-5"><i style="font-size: 150px;" class="mdi mdi-account-card-details"></i></p>
+							
+							<div class="row">
+								<div class="offset-lg-1 col-lg-5">
+									<p><span style="font-size: 20px; font-weight: bold;">First Name: </span> &nbsp; <span style="font-size: 18px;" th:text="${user.firstName}"> </span></p>
+								</div>
+								<div class="offset-lg-1 col-lg-5">
+								<p><span style="font-size: 20px; font-weight: bold;">Last Name: </span> &nbsp; <span style="font-size: 18px;" th:text="${user.lastName}"> </span></p>
+								</div>
+							</div>
+							
+							<div class="row" style="margin-top: 20px;">
+								<div class="offset-lg-1 col-lg-5">
+									<p><span style="font-size: 20px; font-weight: bold;">Email Id: </span> &nbsp; <span style="font-size: 18px;"th:text="${user.email}"></span></p>
+								</div>
+								<div class="offset-lg-1 col-lg-5">
+								<p><span style="font-size: 20px; font-weight: bold;">User Id: </span> &nbsp; <span style="font-size: 18px;" th:text="${user.id}"> </span></p>
+								</div>
+							</div>
+							
+							<div class="row" style="margin-top: 20px;">
+								<div class="offset-lg-1 col-lg-8">
+									<p><span style="font-size: 20px; font-weight: bold;">Designation : </span> &nbsp; <span style="font-size: 18px;"th:text="${user.userTypeId.userType}"></span></p>
+								</div>
+								<div class="offset-lg-1 col-lg-2">
+								<p><span style="font-size: 20px; font-weight: bold;"></span> &nbsp; <span style="font-size: 18px;" > </span></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>
