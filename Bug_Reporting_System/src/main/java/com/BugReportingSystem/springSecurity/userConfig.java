@@ -37,22 +37,23 @@ public class userConfig extends WebSecurityConfigurerAdapter{
 
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception 
+	 {
 		auth.authenticationProvider(authenticationProvider());
 		
 	}
 
 	
-	  @Override protected void configure(HttpSecurity http) throws Exception {
+	  @Override protected void configure(HttpSecurity http) throws Exception 
+	  {
 	  http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
 	  .antMatchers("/developer/**").hasRole("DEVELOPER")
 	  .antMatchers("/tester/**").hasRole("QA")
 	  .antMatchers("/**").permitAll().and()
 	  .formLogin().loginPage("/signin")
 	  .defaultSuccessUrl("/")
-	  .and().csrf().disable(); }
-	 
-	
-	
+	  .and().csrf().disable(); 
+	  }
+	 	
 	
 }
