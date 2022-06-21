@@ -24,6 +24,9 @@ public class Team {
 	
 	@ManyToMany
 	private List<User> user;
+	
+	@ManyToMany
+	private List<Project> project;
 
 	public int getId() {
 		return id;
@@ -49,11 +52,14 @@ public class Team {
 		this.user = user;
 	}
 
-	public Team(int id, String teamName, List<User> user) {
-		super();
-		this.id = id;
-		this.teamName = teamName;
-		this.user = user;
+	
+
+	public List<Project> getProject() {
+		return project;
+	}
+
+	public void setProject(List<Project> project) {
+		this.project = project;
 	}
 
 	public Team() {
@@ -61,9 +67,18 @@ public class Team {
 		
 	}
 
-	@Override
-	public String toString() {
-		return "Team [id=" + id + ", teamName=" + teamName + ", user=" + user + "]";
+	public Team(int id, String teamName, List<User> user, List<Project> project) {
+		super();
+		this.id = id;
+		this.teamName = teamName;
+		this.user = user;
+		this.project = project;
 	}
 
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", teamName=" + teamName + ", user=" + user + ", project=" + project + "]";
+	}
+
+	
 }

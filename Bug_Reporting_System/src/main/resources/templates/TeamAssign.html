@@ -3,7 +3,7 @@
 	th:replace="Header::layout(~{::table})">
 <head>
 <meta charset="ISO-8859-1">
-<title></title>
+<title>Insert title here</title>
 </head>
 <body>
 	<div th:fragment="table" class="main-panel">
@@ -14,34 +14,31 @@
 						<div class="card-body">
 							<h4 class="card-title">Teams</h4>
 							<p class="card-description">
-								Currently Active
-								<code>Teams</code>
+								Teams
+								<code>Assign To Project</code>
 							</p>
 							<div class="table-responsive">
 								<table class="table table-striped">
 									<thead>
 										<tr>
 											<th>Team Name</th>
-											<th>Add Member</th>
-											<th>Team Member</th>
-											<th>Action</th>
+											<th>Remove</th>
+											
+
 										</tr>
 									</thead>
 									<tbody>
 										<tr th:each="e : ${teams}">
 											<td class="py-1"><span th:text="${e.teamName}"></span></td>
-											<td><a class="btn btn-dark" th:href="@{/admin/team/addemployee/{id}(id=${e.id})}" ><i class="mdi mdi-plus"></i></a></td>
-											<td>
-												<a class="btn btn-info" th:href="@{/admin/team/showmem/{id}(id=${e.id})}"><i class="mdi mdi-eye"></i></a>
-											</td>
-											<td><a class="btn btn-success " th:href="@{/admin/team/rename/{id}(id=${e.id})}" ><i><i class="mdi mdi-rename-box"></i></i></a>
-												&nbsp; <a class="btn btn-danger" th:href="@{/admin/team/delete/{id}(id=${e.id})}" onclick="return confirm('Do you really want to delete a team?');"><i  class="mdi mdi-delete"></i></a>
-											</td>
+											
+											<td><a class="btn btn-danger " th:classappend="${completed} ? disabled : normal" th:href="@{/admin/project/removeTeam/{teamid}/{projectid}(teamid=${e.id},projectid=${pid})}"><i class="mdi mdi-minus"></i></a></td>
+											
+
 										</tr>
 
 									</tbody>
 								</table>
-								
+
 							</div>
 						</div>
 					</div>

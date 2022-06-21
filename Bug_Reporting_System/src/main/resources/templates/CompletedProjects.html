@@ -29,14 +29,14 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr th:each="e:${projects}">
+												<tr th:each="e:${project1}">
 													<td class="py-1">
 														<span th:text="${e.projectName}"></span>
 													</td>
-													<td><a class="btn btn-dark" th:href="@{/admin/project/addTeams/{id}(id=${e.id})}"><i class="mdi mdi-plus"></i></a></td>
+													<td><a class="btn btn-dark disabled" ><i class="mdi mdi-plus"></i></a></td>
 													<td><a class="btn btn-info" th:href="@{/admin/project/viewTeams/{id}(id=${e.id})}"><i class="mdi mdi-eye"></i></a> </td>
 													<td><span th:text="${e.status}==0?'In Progress':'Completed'"></span></td>
-													<td><a class="btn btn-success" th:href="@{/admin/project/rename/{id}(id=${e.id})}">Rename</a> <a href="" class="btn btn-primary" th:href="@{/admin/project/editstatus/{id}(id=${e.id})}">Edit Status</a> <a href="" class="btn btn-danger" th:href="@{/admin/project/delete/{id}(id=${e.id})}">Delete</a></td>
+													<td><a class="btn btn-success disabled" >Rename</a> <a href="" class="btn btn-primary" th:href="@{/admin/project/editstatus/{id}(id=${e.id})}">Edit Status</a> <a href="" class="btn btn-danger disabled" >Delete</a></td>
 												</tr>
 
 											</tbody>

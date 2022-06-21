@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.BugReportingSystem.Entity.Project;
 import com.BugReportingSystem.Entity.Team;
 import com.BugReportingSystem.Entity.User;
 import com.BugReportingSystem.Entity.UserRole;
+import com.BugReportingSystem.Service.ProjectService;
 import com.BugReportingSystem.Service.TeamService;
 import com.BugReportingSystem.Service.UserService;
 
@@ -44,10 +46,13 @@ public class AdminController {
 	 * perform crud operations
 	 */
 	@Autowired
-	UserService ser;
+	private UserService ser;
 	
 	@Autowired
 	private TeamService teamser;
+	
+	@Autowired
+	private ProjectService projectser;
 
 	public AdminController() {
 	
@@ -76,16 +81,6 @@ public class AdminController {
 	}
 
 	
-	/*
-	 * Current Projects Request Mapping.
-	 * @return CurrentProjects.html file path
-	 */
-	@GetMapping("/currentprojects")
-	public String currentProjects(Model m)
-	{
-		m.addAttribute("title","Current Projects");
-		return "CurrentProjects";
-	}
 	
 	/*
 	 * Admin Dashboard Request Mapping.
@@ -101,6 +96,7 @@ public class AdminController {
 		m.addAttribute("title","Dashboard");
 		m.addAttribute("empcount",ser.empCount());
 		m.addAttribute("teamCount",teamser.teamCount());
+		m.addAttribute("projectCount",projectser.ProjectCount());
 		
 		return "Dashboard";
 	}
@@ -314,6 +310,144 @@ public class AdminController {
 		teamser.saveTeam(team);
 		
 		return "redirect:/admin/teams";
+	}
+	
+	@RequestMapping("/addProject")
+	public String addproject()
+	{
+		return "AddProject";
+	}
+	@PostMapping("/addProject/add")
+	public String addProjectDb(@ModelAttribute("project") Project project)
+	{
+		project.setProjectName(project.getProjectName());
+		projectser.saveProject(project);
+		return "redirect:/admin/currentprojects";
+	}
+
+	/*
+	 * Current Projects Request Mapping.
+	 * @return CurrentProjects.html file path
+	 */
+	@GetMapping("/currentprojects")
+	public String currentProjects(Model m)
+	{
+		m.addAttribute("title","Current Projects");
+		m.addAttribute("projects", projectser.getAllByStatus(0));
+		return "CurrentProjects";
+	}
+	
+	@GetMapping("/completedprojects")
+	public String completedProjects(Model m)
+	{
+		m.addAttribute("title","Current Projects");
+		m.addAttribute("project1", projectser.getAllByStatus(1));
+		return "CompletedProjects";
+	}
+	@GetMapping("/project/addTeams/{id}")
+	public String addTeamsInProject(@PathVariable("id") int pid,Model m)
+	{
+		List<Team> team=teamser.getAllTeams();
+		List<Team> teamProject=teamser.findAllByProject(projectser.getProjectById(pid));
+		for (int i = 0; i < teamProject.size(); i++) {
+			Team teamProject2=teamProject.get(i);
+			team.remove(teamProject2);
+		}	
+		m.addAttribute("teams",team);
+		m.addAttribute("projectid",pid);
+		return "AddTeamInProject";
+	}
+	
+	@GetMapping("/project/addteam/{projectid}/{teamid}")
+	public String addTeamIntoProject(@PathVariable("projectid") int pid,@PathVariable("teamid") int tid)
+	{
+		int projectid=pid;
+		Project project=projectser.getProjectById(pid);
+		Team team=teamser.getTeamById(tid);
+		
+		project.getTeam().add(team);
+		team.getProject().add(project);
+		
+		projectser.saveProject(project);
+		teamser.saveTeam(team);
+		return "redirect:/admin/project/addTeams/{projectid}";
+	}
+	
+	@GetMapping("/project/viewTeams/{id}")
+	public String viewTeams(@PathVariable("id") int id,Model m)
+	{
+		Project project=projectser.getProjectById(id);
+		List<Team>teams=teamser.findAllByProject(project);
+		if ((int)project.getStatus()==1) {
+			m.addAttribute("completed",true);
+		}
+		else
+		{
+			m.addAttribute("completed",false);
+		}
+		m.addAttribute("teams",teams);
+		m.addAttribute("pid",id);
+		return "TeamAssign";
+	}
+	
+	@GetMapping("/project/removeTeam/{teamid}/{projectid}")
+	public String removeTeam(@PathVariable("teamid") int tid,@PathVariable("projectid") int pid)
+	{
+		int projectid=pid;
+		Team team=teamser.getTeamById(tid);
+		Project project=projectser.getProjectById(pid);
+		team.getProject().remove(project);
+		project.getTeam().remove(team);
+		teamser.saveTeam(team);
+		projectser.saveProject(project);
+		return "redirect:/admin/project/viewTeams/{projectid}";
+	}
+	
+	@GetMapping("/project/rename/{id}")
+	public String renameProject(@PathVariable("id") int pid,Model m)
+	{
+		Project project=projectser.getProjectById(pid);
+		m.addAttribute("project",project);
+		
+		return "RenameProject";
+	}
+	
+	@PostMapping("/project/rename")
+	public String renameProjectr(@ModelAttribute("project") Project project)
+	{
+		System.out.println(project);
+		List<Team> team=teamser.findAllByProject(project);
+		Project expro=projectser.getProjectById(project.getId());
+		expro.setProjectName(project.getProjectName());
+		expro.setTeam(team);
+		projectser.updateProject(expro);
+		
+		return "redirect:/admin/currentprojects";
+	}
+	@GetMapping("/project/delete/{id}")
+	public String deleteProject(@PathVariable("id") int pid)
+	{
+		projectser.deleteProjectById(pid);
+		return "ProjectStatus";
+	}
+	
+	@GetMapping("/project/editstatus/{id}")
+	public String editStatus(@PathVariable("id") int id,Model m)
+	{
+		Project project=projectser.getProjectById(id);
+		m.addAttribute("project",project);
+		m.addAttribute("pid",id);
+		return "ProjectStatus";
+		
+	}
+	@PostMapping("/editstatus/{id}")
+	public String editStatusp(@ModelAttribute("project") Project project,@PathVariable("id") int id)
+	{
+		Project exproject=projectser.getProjectById(id);
+		exproject.setStatus(project.getStatus());
+		projectser.updateProject(exproject);
+		System.out.println(project);
+		return "redirect:/admin/currentprojects";
 	}
 }
 	

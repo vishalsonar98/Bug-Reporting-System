@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.BugReportingSystem.Entity.Project;
 import com.BugReportingSystem.Entity.Team;
 import com.BugReportingSystem.Entity.User;
 
@@ -25,4 +26,5 @@ public interface TeamService {
 	int teamCount();
 	
 	List<Team> findAllByUser(User user);
+	List<Team> findAllByProject(Project project);
 }
