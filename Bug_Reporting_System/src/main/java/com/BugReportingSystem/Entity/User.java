@@ -41,7 +41,7 @@ public class User {
 	@Column(unique = true)
 	@Email()
 	private String email;
-
+	@NotBlank(message = "*Password Required")
 	private String password;
 	
 	/*

@@ -27,40 +27,41 @@ import com.BugReportingSystem.Service.ProjectService;
 import com.BugReportingSystem.Service.TeamService;
 import com.BugReportingSystem.Service.UserService;
 
-/*
-* Admin Controller controls all the request for admin panel and
-* provides response or request mapping for each request. 
+/**
+* @author	Vishal Sonar
+* @since	1.0
 */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 	
-	/*
+	/**
 	 * Password encoder to encript password of users.
 	 */
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
-	/*
-	 * Object Ref. of UserService interface which provides various methods to
-	 * perform crud operations
+	/**
+	 * Object Ref. of UserService interface which provides various methods to perform crud operations.
 	 */
 	@Autowired
 	private UserService ser;
-	
+	/**
+	 * Object Ref. of TeamService interface which provides various methods to perform crud operations.
+	 */
 	@Autowired
 	private TeamService teamser;
-	
+	/**
+	 * Object Ref. of ProjectService interface which provides various methods to perform crud operations.
+	 */
 	@Autowired
 	private ProjectService projectser;
-
-	public AdminController() {
 	
-	}
+	
 
-	/*
+	/**
 	 * Request mappign for "/" 
-	 * @return admin dashboard
+	 * @return redirects to '/admin/dashboard' request.
 	 */		
 	@RequestMapping("/")
 	public String index()
@@ -69,9 +70,11 @@ public class AdminController {
 	}
 	
 
-	/*
-	 * Navigation bar HTML request mapping.
-	 * @return Hearder.html file path
+	/**
+	 *	'/Header' request mapping.
+	 * 	<p>This method redirects to the Header.html page which is a 
+	 * 	<p>common page for all the other html pages of admin.
+	 * 	@return Hearder.html file path
 	 */
 	@GetMapping("/Header")
 	public String home()
@@ -82,25 +85,35 @@ public class AdminController {
 
 	
 	
-	/*
-	 * Admin Dashboard Request Mapping.
-	 * @return Dashboard.html file path
+	/**
+	 *  '/dashboard' Request Mapping.
+	 *  <p> Passes various model attributes to show data on Dashboard.html page.
+	 *  @param	model add attributes of model
+	 *  @param	principle provides user name and password of already login user
+	 * 	@return Dashboard.html file path
 	 */
 	@GetMapping("/dashboard")
-	public String dashboard(Model m,Principal p)
+	public String dashboard(Model model,Principal principle)
 	{
-		User user=ser.getUserByUserName(p.getName());
-		m.addAttribute("name",user.getFirstName()+" "+user.getLastName());
-		m.addAttribute("email",user.getEmail());
-		m.addAttribute("dash",true);
-		m.addAttribute("title","Dashboard");
-		m.addAttribute("empcount",ser.empCount());
-		m.addAttribute("teamCount",teamser.teamCount());
-		m.addAttribute("projectCount",projectser.ProjectCount());
+		User user=ser.getUserByUserName(principle.getName());
+		model.addAttribute("name",user.getFirstName()+" "+user.getLastName());
+		model.addAttribute("email",user.getEmail());
+		model.addAttribute("dash",true);
+		model.addAttribute("title","Dashboard");
+		model.addAttribute("empcount",ser.empCount());
+		model.addAttribute("teamCount",teamser.teamCount());
+		model.addAttribute("projectCount",projectser.ProjectCount());
 		
 		return "Dashboard";
 	}
 	
+	/**
+	 *  '/profile/show' Request Mapping.
+	 *  <p> This method provides request mapping for AdminProfile.html page which demonstrates the profile of user
+	 *  @param	model add attributes of model
+	 *  @param	principle provides user name and password of already login user
+	 * 	@return Dashboard.html file path
+	 */
 	@RequestMapping("/profile/show")
 	public String adminProfile(Model m,Principal p)
 	{
@@ -108,8 +121,11 @@ public class AdminController {
 		return "AdminProfile";
 	}
 	
-	/*
-	 * Employees Page Request Mapping.
+	/**
+	 * '/employees' Request Mapping.
+	 * <p>This method provides request mapping for Employees.html page which shows the information of employees
+	 * <p> Shows information of employees added by admin
+	 *  @param	model add attributes of model
 	 *  @return Employees.html file path
 	 */
 	@GetMapping("/employees")
@@ -120,8 +136,10 @@ public class AdminController {
 		return "Employees";
 	}
 	
-	/*
-	 * Add employee page Request Mapping.
+	/**
+	 * '/addemployee' Request Mapping.
+	 * <p>This method provides request mapping for AddEmployee page which provides form to add new employees
+	 * @param	model add attributes of model
 	 * @return AddEmployee.html file path
 	 */
 	@GetMapping("/addemployee")
@@ -132,11 +150,15 @@ public class AdminController {
 		return "AddEmployee";
 	}
 	
-	/*
-	 * When admin press submit button of form this request send by browser.
-	 * This Request saves the information of new employee.
-	 * After saving data admin get redirected to employees page.
-	 *  @return redirect request to "/admin/employees" 
+	/**
+	 *	'/addemployee/add' Request Mapping.
+	 *	<p> This method get called if and only if admin click the submit button of add employee form
+	 *	<p> This method saves all the data which provided by admin in User Entity and in user table
+	 * 	@param	user stores the user object which contains all information of employee
+	 * 	@param	role stores the user role id which which is get from the form.
+	 * 	@param	userRole its a reference variable of object of UserRole entity
+	 * 	@param	model add attributes of model
+	 *  @return redirect's to '/admin/employees' request
 	 */
 	@PostMapping("/addemployee/add")
 	public String addemployeeimp(@ModelAttribute("user") User user,@RequestParam("Role") int role,UserRole userRole,Model m) //Core pojo
@@ -151,12 +173,14 @@ public class AdminController {
 		return "redirect:/admin/employees";
 	}
 
-	/*
-	 * if admin press Delete button of Employees page this request send by browser.
-	 * This Request deletes data of particular employee and id of that employee passed
-	 * in request.
-	 * This method performs delete action by using methods of UserServises Interface.
-	 *  @return redirect request to "/admin/employees"
+	/**
+	 *	'/employee/{id}' Request Mapping.
+	 * 	<p>if admin press Delete button of Employees page this request send by browser.
+	 * 	<p>This Request deletes data of particular employee and id of that employee passed
+	 * 	<p>in request.
+	 * 	<p>This method performs delete action by using methods of UserServises Interface.
+	 * 	@param	id contains id of employee which we want to delete from the database
+	 *	@return redirect request to "/admin/employees"
 	 */
 	@GetMapping("/employee/{id}")
 	public String deleteEmployee(@PathVariable int id)
@@ -177,12 +201,15 @@ public class AdminController {
 		return "redirect:/admin/employees";
 	}
 
-	/*
-	 * If admin press Update button of Employee page this request is send by
-	 * browser.
-	 * In this request we provied 'id' of perticular employee and then
-	 * assign that id to Model attribute after that we redirects admin to
-	 * UpdateEmployee page.
+	/**
+	 * 	'/employee/update/{id}' Request Mapping.
+	 * 	<p>If admin press Update button of Employee page this request is send by
+	 * 	<p>browser.
+	 * 	<p>In this request we provied 'id' of perticular employee and then
+	 * 	<p>assign that id to Model attribute after that we redirects admin to
+	 * 	<p>UpdateEmployee page.
+	 * 	@param	id contains id of employee('user') which we want to update
+	 * 	@param	model add attributes of model
 	 *  @return UpdateEmployee.html file path
 	 */
 	@RequestMapping("/employee/update/{id}")
@@ -192,10 +219,16 @@ public class AdminController {
 		return "UpdateEmployee";
 	}
 
-	/*
-	 * This method provides functionality of update data of employees or users.
-	 * First we fatch all the data of employee from the form and then insert those data in databse
-	 * by using 'saveUser' method of UserService Interface.
+	/**
+	 * 	'/employee/{id}' Request Mapping.
+	 * 	<p>This method provides functionality of update data of employees or users.
+	 * 	<p>First we fatch all the data of employee from the form and then insert those data in databse
+	 * 	<p>by using 'saveUser' method of UserService Interface.
+	 * 	@param	user stores the user object which contains all information of employee
+	 * 	@param	id contains id of employee('user') which we want to update
+	 * 	@param	model add attributes of model
+	 * 	@param	role stores the user role id which which is get from the form.
+	 * 	@param	userRole its a reference variable of object of UserRole entity
 	 *  @return redirect request to "/admin/employees"
 	 */
 	@PostMapping("/employee/{id}")
@@ -215,7 +248,13 @@ public class AdminController {
 		ser.saveUser(existinguser);
 		return "redirect:/admin/employees";
 	}
-	
+	/**
+	 * 	'/teams' Request Mapping.
+	 * 	<p>This method gives the Teams.html page
+	 * 	<p>Teams.html shows all the teams created by admin
+	 * 	@param	model add attributes of model
+	 *  @return Teams.html page
+	 */
 	@RequestMapping("/teams")
 	public String teams(Model m)
 	{
@@ -223,21 +262,39 @@ public class AdminController {
 		m.addAttribute("teams",teamser.getAllTeams());
 		return "Teams";
 	}
-	
+	/**
+	 * 	'/addteam' Request Mapping.
+	 * 	<p>This method gives the AddTeam.html page
+	 * 	<p>AddTeam.html page provides from to add new team in database
+	 * 	@param	model add attributes of model
+	 *  @return AddTeam.html page
+	 */
 	@RequestMapping("/addteam")
 	public String addTeam(Model m)
 	{
 		m.addAttribute("team",new Team());
 		return "AddTeam";
 	}
-	
+	/**
+	 * 	'/addteam/add' Request Mapping.
+	 * 	<p>This method saves the team in database which is provided by admin
+	 * 	<p>AddTeam.html page provides from to add new team in database
+	 * 	@param	team stores the object of 'Team' entity which contains name of team
+	 *  @return redirect's to '/admin/teams' request
+	 */
 	@PostMapping("/addteam/add")
 	public String addTeamAdd(@ModelAttribute("team") Team team)
 	{
 		teamser.saveTeam(team);
 		return "redirect:/admin/teams";
 	}
-	
+	/**
+	 * 	'/team/addemployee/{id}' Request Mapping.
+	 * 	<p>This method filter the employees. Employees which are already present in team are not shows in  AddEmpInTeam.html page.
+	 * 	@param	model add attributes of model
+	 * 	@param	id store id of team 
+	 *  @return AddEmpInTeam.html page
+	 */
 	@GetMapping("/team/addemployee/{id}")
 	public String addEmployeeTeam(Model m,@PathVariable("id") int id)
 	{
@@ -255,7 +312,14 @@ public class AdminController {
 		m.addAttribute("teamid",id);
 		return "AddEmpInTeam";
 	}
-	
+	/**
+	 * 	'/team/addemployee/{id}/{teamid}' Request Mapping.
+	 * 	<p>This method get called if the admin click on add buttton.
+	 * 	<p>It add's employee in the team 
+	 * 	@param	empid store employee id
+	 * 	@param	teamid store id of team 
+	 *  @return redirect to '/admin/team/addemployee/{teamid}' request
+	 */
 	@GetMapping("/team/addemployee/{id}/{teamid}")
 	public String AddEmployeeInTeam(@PathVariable("id") int empid,@PathVariable("teamid") int teamid)
 	{
@@ -269,7 +333,14 @@ public class AdminController {
 		teamser.saveTeam(team);
 		return "redirect:/admin/team/addemployee/{teamid}";
 	}
-	
+	/**
+	 * 	'/team/showmem/{id}' Request Mapping.
+	 * 	<p>This method passes all the information of team members to ShowTeamMem.html page
+	 * 	<p>Html page shows all the information of employees which are the part of particular team.
+	 * 	@param	teamid store id of team 
+	 * 	@param	model add attributes of model
+	 *  @return ShowTeamMem.html page
+	 */
 	@GetMapping("/team/showmem/{id}")
 	public String showMember(@PathVariable("id") int teamid,Model m)
 	{
@@ -277,6 +348,14 @@ public class AdminController {
 		m.addAttribute("team",teamser.getTeamById(teamid).getUser());
 		return "ShowTeamMem";
 	}
+	/**
+	 * 	'/team/removemember/{id}/{teamid}' Request Mapping.
+	 * 	<p>This method removes the specific employee details from team or removes specific employee from team
+	 * 	<p>When admin click on remove button then this method get called.
+	 * 	@param	id store employee id
+	 * 	@param	teamid store id of team 
+	 *  @return redirect to '/admin/team/showmem/{teamid}' request.
+	 */
 	@GetMapping("/team/removemember/{id}/{teamid}")
 	public String removeMember(@PathVariable("id") int id,@PathVariable("teamid") int teamid)
 	{
@@ -289,12 +368,26 @@ public class AdminController {
 		teamser.saveTeam(team);
 		return "redirect:/admin/team/showmem/{teamid}";
 	}
+	/**
+	 * 	'/team/delete/{id}' Request Mapping.
+	 * 	<p>This method delete team from database
+	 * 	<p>When admin click on delete button then this method get called.
+	 * 	@param	tid store id of team 
+	 *  @return redirect to '/admin/teams' request.
+	 */
 	@GetMapping("/team/delete/{id}")
 	public String deleteTeam(@PathVariable("id") int tid)
 	{
 		teamser.deleteTeamById(tid);
 		return "redirect:/admin/teams";
 	}
+	/**
+	 * 	'/team/rename/{id}' Request Mapping.
+	 * 	<p>This method provides the RenameTeam.html page in page we user get form for rename particular team.
+	 * 	@param	model add attributes of model
+	 * 	@param	tid store id of team 
+	 *  @return RenameTeam.html page
+	 */
 	@GetMapping("/team/rename/{id}")
 	public String rename(Model m,@PathVariable("id") int tid)
 	{
@@ -302,6 +395,12 @@ public class AdminController {
 		
 		return "RenameTeam";
 	}
+	/**
+	 * 	'/team/rename' Request Mapping.
+	 * 	<p>This method Rename the team or updates the team name in database
+	 * 	@param	team stores the object of 'Team' entity which contains name of team
+	 *  @return redirect to '/admin/teams' request.
+	 */
 	@PostMapping("/team/rename")
 	public String renameTeam(@ModelAttribute("team") Team team)
 	{
@@ -311,23 +410,47 @@ public class AdminController {
 		
 		return "redirect:/admin/teams";
 	}
-	
+	/**
+	 * 	'/addProject' Request Mapping.
+	 * 	<p>This method provides AddProject.html page and pass model attribute of Project class object
+	 * 	@param	model add attributes of model
+	 *  @return AddProject.html page
+	 */
 	@RequestMapping("/addProject")
-	public String addproject()
+	public String addproject(Model m)
 	{
+		m.addAttribute("project",new Project());
 		return "AddProject";
 	}
+	/**
+	 * 	'/addProject/add' Request Mapping.
+	 * 	<p>This method crates new project  in database
+	 * 	<p>Also validates the form details when user click on submit button.
+	 * 	@param	project stores the object of 'Project' entity which contains name of project
+	 * 	@param	result stores error occur during validation
+	 *  @return if the there are error of validation it will return AddProject.html page and shows error on page otherwise it will redirect to '/admin/currentprojects' request
+	 */
 	@PostMapping("/addProject/add")
-	public String addProjectDb(@ModelAttribute("project") Project project)
+	public String addProjectDb(@Valid @ModelAttribute("project") Project project,BindingResult result)
 	{
-		project.setProjectName(project.getProjectName());
-		projectser.saveProject(project);
-		return "redirect:/admin/currentprojects";
+		if (result.hasErrors()) {
+			
+			return "AddProject";
+		}
+		else
+		{
+			
+			project.setProjectName(project.getProjectName());
+			projectser.saveProject(project);
+			return "redirect:/admin/currentprojects";
+		}
 	}
 
-	/*
-	 * Current Projects Request Mapping.
-	 * @return CurrentProjects.html file path
+	/**
+	 * 	'/currentprojects' Request Mapping.
+	 * 	<p>This method provides information of active projects whose status is 'In-progress'
+	 * 	@param	model add attributes of model
+	 *  @return CurrentProjects.html page
 	 */
 	@GetMapping("/currentprojects")
 	public String currentProjects(Model m)
@@ -336,7 +459,12 @@ public class AdminController {
 		m.addAttribute("projects", projectser.getAllByStatus(0));
 		return "CurrentProjects";
 	}
-	
+	/**
+	 * 	'/completedprojects' Request Mapping.
+	 * 	<p>This method provides information of completed projects whose status is 'completed'
+	 * 	@param	model add attributes of model
+	 *  @return CompletedProjects.html page
+	 */
 	@GetMapping("/completedprojects")
 	public String completedProjects(Model m)
 	{
@@ -344,6 +472,13 @@ public class AdminController {
 		m.addAttribute("project1", projectser.getAllByStatus(1));
 		return "CompletedProjects";
 	}
+	/**
+	 * 	'/project/addTeams/{id}' Request Mapping.
+	 * 	<p>filters the teams and provides the list of team which are not the part of current project
+	 * 	@param	pid project id
+	 * 	@param	model add attributes of model
+	 *  @return AddTeamInProject.html page
+	 */
 	@GetMapping("/project/addTeams/{id}")
 	public String addTeamsInProject(@PathVariable("id") int pid,Model m)
 	{
@@ -357,7 +492,14 @@ public class AdminController {
 		m.addAttribute("projectid",pid);
 		return "AddTeamInProject";
 	}
-	
+	/**
+	 * 	'/project/addteam/{projectid}/{teamid}' Request Mapping.
+	 * 	<p>When method called it will add the particular team inside the project of assigns project to the team.
+	 * 	<p>simply in database team id and project id get stored.
+	 * 	@param	pid project id
+	 * 	@param	tid team id
+	 *  @return redirect to '/admin/project/addTeams/{projectid}' request
+	 */
 	@GetMapping("/project/addteam/{projectid}/{teamid}")
 	public String addTeamIntoProject(@PathVariable("projectid") int pid,@PathVariable("teamid") int tid)
 	{
@@ -372,7 +514,13 @@ public class AdminController {
 		teamser.saveTeam(team);
 		return "redirect:/admin/project/addTeams/{projectid}";
 	}
-	
+	/**
+	 * 	'/project/viewTeams/{id}' Request Mapping.
+	 * 	<p>this method provides the list of teams which are the part of particular project
+	 * 	@param	id project id
+	 * 	@param	model add attributes of model
+	 *  @return TeamAssign.html page
+	 */
 	@GetMapping("/project/viewTeams/{id}")
 	public String viewTeams(@PathVariable("id") int id,Model m)
 	{
@@ -389,7 +537,13 @@ public class AdminController {
 		m.addAttribute("pid",id);
 		return "TeamAssign";
 	}
-	
+	/**
+	 * 	'/project/removeTeam/{teamid}/{projectid}' Request Mapping.
+	 * 	<p>this method removes the team from project
+	 * 	@param	tid team id
+	 * 	@param	pid project id
+	 *  @return redirect to '/admin/project/viewTeams/{projectid}' request
+	 */
 	@GetMapping("/project/removeTeam/{teamid}/{projectid}")
 	public String removeTeam(@PathVariable("teamid") int tid,@PathVariable("projectid") int pid)
 	{
@@ -402,7 +556,13 @@ public class AdminController {
 		projectser.saveProject(project);
 		return "redirect:/admin/project/viewTeams/{projectid}";
 	}
-	
+	/**
+	 * 	'/project/rename/{id}' Request Mapping.
+	 * 	<p>provides existing project information to html page 
+	 * 	@param	pid project id
+	 * 	@param	model add attributes of model
+	 *  @return RenameProject.html page
+	 */
 	@GetMapping("/project/rename/{id}")
 	public String renameProject(@PathVariable("id") int pid,Model m)
 	{
@@ -411,7 +571,12 @@ public class AdminController {
 		
 		return "RenameProject";
 	}
-	
+	/**
+	 * 	'/project/rename' Request Mapping.
+	 * 	<p>update name of project in database
+	 * 	@param	project stores the object of 'Project' entity which contains name of project
+	 *  @return redirect to '/admin/currentprojects'
+	 */
 	@PostMapping("/project/rename")
 	public String renameProjectr(@ModelAttribute("project") Project project)
 	{
@@ -424,13 +589,25 @@ public class AdminController {
 		
 		return "redirect:/admin/currentprojects";
 	}
+	/**
+	 * 	'/project/delete/{id}' Request Mapping.
+	 * 	<p>deletes project from the database with the help of project id
+	 * 	@param	pid project id
+	 *  @return redirect to '/admin/currentprojects'
+	 */
 	@GetMapping("/project/delete/{id}")
 	public String deleteProject(@PathVariable("id") int pid)
 	{
 		projectser.deleteProjectById(pid);
-		return "ProjectStatus";
+		return "redirect:/admin/currentprojects";
 	}
-	
+	/**
+	 * 	'/project/editstatus/{id}' Request Mapping.
+	 * 	<p>provides existing object of project to html page
+	 * 	@param	id project id
+	 * 	@param	model add attributes of model
+	 *  @return ProjectStatus.html page
+	 */
 	@GetMapping("/project/editstatus/{id}")
 	public String editStatus(@PathVariable("id") int id,Model m)
 	{
@@ -440,6 +617,13 @@ public class AdminController {
 		return "ProjectStatus";
 		
 	}
+	/**
+	 * 	'/editstatus/{id}' Request Mapping.
+	 * 	<p>Update the name of project in database
+	 * 	@param	project stores the object of 'Project' entity which contains name of project
+	 * 	@param	id project id
+	 *  @return redirect to '/admin/currentprojects'
+	 */
 	@PostMapping("/editstatus/{id}")
 	public String editStatusp(@ModelAttribute("project") Project project,@PathVariable("id") int id)
 	{

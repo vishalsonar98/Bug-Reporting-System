@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="project")
@@ -18,6 +19,8 @@ public class Project {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@NotBlank(message = "*Project Name Required")
 	private String projectName;
 	private int status;
 	@ManyToMany(mappedBy = "project", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
