@@ -1,7 +1,6 @@
 package com.BugReportingSystem.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,18 +19,36 @@ import com.BugReportingSystem.Service.ProjectService;
 import com.BugReportingSystem.Service.TeamService;
 import com.BugReportingSystem.Service.UserService;
 
+/**
+* @author	Vishal Sonar
+* @since	1.0
+*/
 @Controller
 @RequestMapping("/developer")
 public class DeveloperController 
 {
+	/**
+	 * Object Ref. of UserService interface which provides various methods to perform crud operations.
+	 */
 	@Autowired
 	private UserService userser;
-	
+	/**
+	 * Object Ref. of TeamService interface which provides various methods to perform crud operations.
+	 */
 	@Autowired
 	private TeamService teamser;
-	
+	/**
+	 * Object Ref. of ProjectService interface which provides various methods to perform crud operations.
+	 */
 	@Autowired
 	private ProjectService projectser;
+	/**
+	 *  '/dashboard' Request Mapping.
+	 *  <p> Passes various model attributes to show data on Dashboard.html page.
+	 *  @param	model add attributes of model
+	 *  @param	principle provides user name and password of already login user
+	 * 	@return Dashboard.html file path
+	 */
 	@RequestMapping("/dashboard")
 	public String devdash(Principal p,Model m)
 	{
@@ -49,6 +66,7 @@ public class DeveloperController
 		
 		m.addAttribute("user",userser.getUserByUserName(p.getName()));
 		m.addAttribute("dash",true);
+		//'/'
 		return "/developer/DeveloperDash";
 	}
 	@RequestMapping("/navbar")

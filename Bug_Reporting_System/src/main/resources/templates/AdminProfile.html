@@ -40,6 +40,14 @@
 								<p><span style="font-size: 20px; font-weight: bold;"></span> &nbsp; <span style="font-size: 18px;" > </span></p>
 								</div>
 							</div>
+							<div class="row" style="margin-top: 20px;">
+								<div class="offset-lg-1 col-lg-5">
+									<p><a href="" class="btn btn-success" style="width: 100%;" title="Edit Profile"><i style="font-size: 25px;" class="mdi mdi-rename-box"></i> </a></p>
+								</div>
+								<div class="col-lg-5" >
+								<p><a style="width: 100%;" th:href="@{/admin/profile/changePassword/{id}(id=${user.id})}" class="btn btn-primary" title="Reset Password" ><i style="font-size: 25px;" class="mdi mdi-account-key"></i></a></p>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

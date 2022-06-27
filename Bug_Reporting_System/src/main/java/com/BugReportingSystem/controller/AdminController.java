@@ -121,6 +121,30 @@ public class AdminController {
 		return "AdminProfile";
 	}
 	
+	
+	@GetMapping("/profile/changePassword/{id}")
+	public String adminProfilePasswordResetPage(@PathVariable("id") int id,Model model)
+	{
+		model.addAttribute("user",ser.getUserById(id));
+		return "ChangePassword";
+	}
+	
+	@PostMapping("/profile/changePassword/reset")
+	public String adminProfilePasswordReset(@ModelAttribute("user") User user,@RequestParam("password1") String password1,Model model)
+	{
+		if (!(password1.contains(user.getPassword()))) {
+			model.addAttribute("condition",true);
+			return "ChangePassword";
+		}
+		else {
+			model.addAttribute("condition",false);
+			User exuser=ser.getUserById(user.getId());
+			exuser.setPassword(passwordEncoder.encode(user.getPassword()));
+			ser.saveUser(exuser);
+			return "redirect:/admin/employees";
+		}
+		
+	}
 	/**
 	 * '/employees' Request Mapping.
 	 * <p>This method provides request mapping for Employees.html page which shows the information of employees
