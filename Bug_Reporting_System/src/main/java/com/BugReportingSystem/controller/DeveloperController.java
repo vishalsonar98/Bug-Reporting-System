@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.BugReportingSystem.Entity.Bug;
 import com.BugReportingSystem.Entity.Project;
 import com.BugReportingSystem.Entity.Team;
 import com.BugReportingSystem.Entity.User;
+import com.BugReportingSystem.Service.BugService;
 import com.BugReportingSystem.Service.ProjectService;
 import com.BugReportingSystem.Service.TeamService;
 import com.BugReportingSystem.Service.UserService;
@@ -42,6 +44,11 @@ public class DeveloperController
 	 */
 	@Autowired
 	private ProjectService projectser;
+	/**
+	 * Object Ref. of BugService interface which provides various methods to perform crud operations.
+	 */
+	@Autowired
+	private BugService bugService;
 	/**
 	 *  '/dashboard' Request Mapping.
 	 *  <p> Passes various model attributes to show data on Dashboard.html page.
@@ -109,5 +116,24 @@ public class DeveloperController
 		}
 		m.addAttribute("projects",projects);
 		return "/developer/UserProjects";
+	}
+	
+	@GetMapping("/bugs/show")
+	public String viewBugs(Principal p,Model model)
+	{
+		List<Bug> bugs=bugService.findAllByUser(userser.getUserByUserName(p.getName()));
+		
+		model.addAttribute("bugs",bugService.getDeveloperStatusBug(bugs));
+		return "/developer/ShowBugs";
+	}
+	
+	@GetMapping("/bug/submit/{bid}")
+	public String submitBug(@PathVariable("bid") int bugid)
+	{
+		Bug bug=bugService.getBugById(bugid);
+		bug.setBugStatus("Fixed");
+		
+		bugService.updateBug(bug);
+		return "redirect:/developer/bugs/show";
 	}
 }

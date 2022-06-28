@@ -38,12 +38,12 @@ public class QaController {
 	private BugService bugService;
 	
 	@GetMapping("/dashboard")
-	public String home(Model m,Principal p)
+	public String home(Model model,Principal p)
 	{
-		m.addAttribute("teams",teamService.teamsCountByUser(userService.getUserByUserName(p.getName())));
-		m.addAttribute("projects",projectService.projectCountByUser(userService.getUserByUserName(p.getName())));
-		m.addAttribute("user",userService.getUserByUserName(p.getName()));
-		m.addAttribute("dash",true);
+		model.addAttribute("teams",teamService.teamsCountByUser(userService.getUserByUserName(p.getName())));
+		model.addAttribute("projects",projectService.projectCountByUser(userService.getUserByUserName(p.getName())));
+		model.addAttribute("user",userService.getUserByUserName(p.getName()));
+		model.addAttribute("dash",true);
 		return "/tester/QaDash";
 	}
 	
@@ -91,7 +91,27 @@ public class QaController {
 	public String raiseBugSubmit(@ModelAttribute("bug") Bug bug)
 	{
 		bugService.saveBug(bug);
-		return "redirect:/qa/dashboard";
+		return "redirect:/qa/bug/show";
 	}
 	
+	@GetMapping("/bug/show")
+	public String viewBugs(Principal p,Model model)
+	{
+		model.addAttribute("bugs",bugService.getBugByTester(userService.getUserByUserName(p.getName())));
+		
+		return "/tester/ViewBugs";
+	}
+	@GetMapping("/bug/fullInfo/{bid}")
+	public String viewBugDescription(@PathVariable("bid") int bugid,Model model)
+	{
+		model.addAttribute("bug",bugService.getBugById(bugid));
+		return "/tester/BugDesc";
+	}
+	
+	@GetMapping("/bug/delete/{bid}")
+	public String deleteBug(@PathVariable("bid") int bugid)
+	{
+		bugService.deleteBugById(bugid);
+		return "redirect:/qa/bug/show";
+	}
 }
