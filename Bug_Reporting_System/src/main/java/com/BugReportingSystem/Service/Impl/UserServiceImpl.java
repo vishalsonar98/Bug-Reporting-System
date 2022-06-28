@@ -1,6 +1,10 @@
 package com.BugReportingSystem.Service.Impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,6 +113,36 @@ public class UserServiceImpl implements UserService {
 	public List<User> findAllByTeam(Team team) {
 		
 		return userRepo.findAllByTeam(team);
+	}
+	@Override
+	public Set<User> findAllByTeams(List<Team> teams) {
+		
+		Set<User> users=new HashSet<User>();
+		for (int i = 0; i < teams.size(); i++) {
+			Team team=teams.get(i);
+			users.addAll(userRepo.findAllByTeam(team));
+		}
+		return users;
+	}
+
+	@Override
+	public Set<User> findAllDevelopersByTeams(List<Team> teams) {
+		
+		List<User> users=new ArrayList<User>();
+		Set<User> usersToReturn=new HashSet<User>();
+		for (int i = 0; i < teams.size(); i++) {
+			Team team=teams.get(i);
+			users.addAll(userRepo.findAllByTeam(team));
+		}
+		
+		for (int i = 0; i < users.size(); i++) {
+			User user=users.get(i);
+			if(user.getUserTypeId().getUserTypeId()==101)
+			{
+				usersToReturn.add(user);
+			}
+		}
+		return usersToReturn;
 	}
 	
 }

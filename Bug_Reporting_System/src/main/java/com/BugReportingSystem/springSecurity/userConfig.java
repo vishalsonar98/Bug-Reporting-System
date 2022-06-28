@@ -48,7 +48,7 @@ public class userConfig extends WebSecurityConfigurerAdapter{
 	  {
 	  http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
 	  .antMatchers("/developer/**").hasRole("DEVELOPER")
-	  .antMatchers("/tester/**").hasRole("QA")
+	  .antMatchers("/qa/**").hasRole("QA")
 	  .antMatchers("/**").permitAll().and()
 	  .formLogin().loginPage("/signin")
 	  .defaultSuccessUrl("/")

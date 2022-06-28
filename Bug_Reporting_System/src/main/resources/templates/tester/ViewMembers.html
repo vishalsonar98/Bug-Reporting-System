@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="/tester/Navbar::layout(~{::table})">
+<head>
+<meta charset="ISO-8859-1">
+<title></title>
+</head>
+<body>
+	<div th:fragment="table" class="main-panel">
+		<div class="content-wrapper">
+			<div class="row">
+				<div class="col-lg-12 grid-margin stretch-card">
+					<div class="card">
+						<div class="card-body">
+							<h4 class="card-title">Team <span th:text="${teamname}"></span></h4>
+							<p class="card-description">
+								Team
+								<code>Members</code>
+							</p>
+							<div class="table-responsive">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Email</th>
+											<th>Designation</th>
+											
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="e : ${users}">
+											<td class="py-1"><span th:text="${e.firstName}"></span>&nbsp;<span th:text="${e.lastName}"></span></td>
+											<td><span th:text="${e.email}"></span></td>
+											<td><span th:text="${e.userTypeId.userType}"></span></td>
+											
+											</tr>
+
+									</tbody>
+								</table>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

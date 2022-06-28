@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="tester/Navbar::layout(~{::table})">
+<head>
+<meta charset="ISO-8859-1">
+<title></title>
+</head>
+<body>
+	<div th:fragment="table" class="main-panel">
+		<div class="content-wrapper">
+			<div class="row">
+				<div class="col-lg-12 grid-margin stretch-card">
+					<div class="card">
+						<div class="card-body">
+							<h4 class="card-title">Teams</h4>
+							<p class="card-description">
+								Teams You Are
+								<code>In</code>
+							</p>
+							<div class="table-responsive">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>Team Name</th>
+											<th>View Members</th>
+											
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="e : ${teams}">
+											<td class="py-1"><span th:text="${e.teamName}"></span></td>
+											<td><a class="btn btn-primary" th:href="@{/qa/teams/viewmem/{id}(id=${e.id})}" ><i class="mdi mdi-eye"></i></a></td>
+											
+											</tr>
+
+									</tbody>
+								</table>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

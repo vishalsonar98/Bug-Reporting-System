@@ -1,6 +1,7 @@
 package com.BugReportingSystem.Service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -27,5 +28,10 @@ public interface UserService {
 	
 	int empCount();
 	
+
+	Set<User> findAllByTeams(List<Team> teams);
+
 	List<User> findAllByTeam(Team team);
+	
+	Set<User> findAllDevelopersByTeams(List<Team> teams);
 }

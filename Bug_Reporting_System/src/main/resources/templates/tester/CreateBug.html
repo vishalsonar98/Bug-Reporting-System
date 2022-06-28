@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="/tester/Navbar::layout(~{::form})">
+<head>
+<meta charset="ISO-8859-1">
+<title></title>
+</head>
+<body>
+	<div th:fragment="form" class="main-panel">
+		<div class="content-wrapper">
+			<div class="row">
+				<div class=" col-md-12 grid-margin stretch-card ">
+					<div class="card">
+						<div class="card-body">
+							<h4 class="card-title">Create Bug</h4>
+							<p class="card-description">Fill All Fields</p>
+							<form
+								onsubmit="return confirm('Do you really want to submit the information?');"
+								class="forms-sample" th:action="@{/qa/raiseBug/add}"
+								th:method="post" th:object="${bug}">
+								<div class="form-group">
+									<label for="exampleInputUsername1">Bug title</label> <input
+										type="text" class="form-control" id="bugTitle"
+										placeholder="Bug Title" name="bugTitle" required>
+
+								</div>
+								<div class="form-group">
+									<label for="exampleInputUsername1">Bug Description</label> <textarea style="height: 70px;"
+										type="text" class="form-control" id="bugDescription"
+										 name="bugDiscription" required></textarea>
+
+								</div>
+								<div class="form-group">
+									<label for="exampleInputEmail1">Select Developer</label> <select
+										name="devloperId" class="form-control form-control-sm"
+										id="designation">
+										<option value="none" selected disabled hidden>Select
+											Project</option>
+										<option th:each="e:${users}" th:value="${e.id}"
+											th:text="${e.firstName}+' '+${e.lastName}"></option>
+									</select>
+								</div>
+								<div class="form-group">
+									<input type="hidden" class="form-control" id="bugStatus"
+										name="bugStatus" value="Developer"> 
+									<input
+										type="hidden" class="form-control" id="testerId"
+										name="testerId" th:value="${testerid}">
+									<input
+										type="hidden" class="form-control" id="testerId"
+										name="projectId" th:value="${projectid}">
+								</div>
+								
+								
+ 
+								<button type="submit" class="btn btn-primary me-2">Submit</button>
+								<button type="reset" class="btn btn-light">Clear</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

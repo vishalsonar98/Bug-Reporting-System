@@ -49,7 +49,7 @@ public class SigninController {
 		}
 		else if(ser.getUserByUserName(principal.getName()).getUserTypeId().getUserTypeId()==102)
 		{
-			return "redirect:/tester/dashboard";
+			return "redirect:/qa/dashboard";
 		}
 		System.out.println(principal.getName()+" user role printed");
 		return "redirect:/signin";

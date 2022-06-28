@@ -1,5 +1,6 @@
 package com.BugReportingSystem.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -26,5 +27,10 @@ public interface TeamService {
 	int teamCount();
 	
 	List<Team> findAllByUser(User user);
+	
 	List<Team> findAllByProject(Project project);
+	
+	List<Team> viewTeamsByUser(Principal p);
+	
+	int teamsCountByUser(User user);
 }

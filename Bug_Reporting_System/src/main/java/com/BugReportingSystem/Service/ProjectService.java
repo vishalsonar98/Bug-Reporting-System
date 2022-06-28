@@ -1,11 +1,13 @@
 package com.BugReportingSystem.Service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
 import com.BugReportingSystem.Entity.Project;
 import com.BugReportingSystem.Entity.Team;
+import com.BugReportingSystem.Entity.User;
 
 
 
@@ -28,6 +30,8 @@ public interface ProjectService {
 	int ProjectCount();
 	
 	List<Project> findAllByTeam(Team team);
-
 	
+	Set<Project> findAllByUser(User user);
+
+	int projectCountByUser(User user);
 }
