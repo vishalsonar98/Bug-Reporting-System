@@ -55,9 +55,34 @@ public class BugServiceImpl implements BugService {
 	}
 
 	@Override
-	public List<Bug> getBugByTester(User user) {
+	public List<Bug> getBugByTester(User user,String status) {
+		List<Bug> exbugs=bugRepository.findAllByTesterId(user);
+		List <Bug> bugs=new ArrayList<Bug>();
 		
-		return bugRepository.findAllByTesterId(user);
+		switch (status) {
+		case "Developer": {
+			
+			for (int i = 0; i < exbugs.size(); i++) {
+				Bug bug=exbugs.get(i);
+				if (bug.getBugStatus().contains(status)) {
+					bugs.add(bug);
+				}
+			}
+			break;
+		}
+		case "Fixed":{
+			for (int i = 0; i < exbugs.size(); i++) {
+				Bug bug=exbugs.get(i);
+				if (bug.getBugStatus().contains("Fixed")) {
+					bugs.add(bug);
+				}
+			}
+			break;
+		}
+		}
+		
+			
+		return bugs;
 	}
 
 	@Override

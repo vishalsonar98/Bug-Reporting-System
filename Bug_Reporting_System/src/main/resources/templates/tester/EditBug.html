@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="/tester/Navbar::layout(~{::form})">
+<head>
+<meta charset="ISO-8859-1">
+<title></title>
+</head>
+<body>
+	<div th:fragment="form" class="main-panel">
+		<div class="content-wrapper">
+			<div class="row">
+				<div class=" col-md-12 grid-margin stretch-card ">
+					<div class="card">
+						<div class="card-body">
+							<h4 class="card-title">Edit Bug</h4>
+							<p class="card-description">Fill All Fields</p>
+							<form
+								onsubmit="return confirm('Do you really want to submit the information?');"
+								class="forms-sample" th:action="@{/qa/bug/update}"
+								th:method="post" th:object="${bug}">
+								<div class="form-group">
+									<label for="exampleInputUsername1">Bug title</label> <input
+										type="text" class="form-control" id="bugTitle"
+										placeholder="Bug Title" name="bugTitle" th:field="${bug.bugTitle}" required>
+
+								</div>
+								<div class="form-group">
+									<label for="exampleInputUsername1">Bug Description</label> <textarea style="height: 70px;"
+										type="text" class="form-control" id="bugDescription"
+										 name="bugDiscription" th:field="${bug.bugDiscription}" required></textarea>
+
+								</div>
+									<input type="hidden" th:value="${bug.id}" name="id"/>
+								<button type="submit" class="btn btn-primary me-2">Submit</button>
+								<button type="reset" class="btn btn-light">Clear</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

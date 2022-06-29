@@ -97,9 +97,16 @@ public class QaController {
 	@GetMapping("/bug/show")
 	public String viewBugs(Principal p,Model model)
 	{
-		model.addAttribute("bugs",bugService.getBugByTester(userService.getUserByUserName(p.getName())));
+		model.addAttribute("bugs",bugService.getBugByTester(userService.getUserByUserName(p.getName()),"Developer"));
 		
 		return "/tester/ViewBugs";
+	}
+	@GetMapping("/bug/fixedBugs")
+	public String fixedBugs(Principal p,Model model)
+	{
+		model.addAttribute("bugs",bugService.getBugByTester(userService.getUserByUserName(p.getName()),"Fixed"));
+		
+		return "/tester/FixedBugs";
 	}
 	@GetMapping("/bug/fullInfo/{bid}")
 	public String viewBugDescription(@PathVariable("bid") int bugid,Model model)
@@ -112,6 +119,24 @@ public class QaController {
 	public String deleteBug(@PathVariable("bid") int bugid)
 	{
 		bugService.deleteBugById(bugid);
+		return "redirect:/qa/bug/show";
+	}
+	
+	@GetMapping("/bug/edit/{bid}")
+	public String editBug(@PathVariable("bid") int bid,Model model)
+	{
+		model.addAttribute("bug",bugService.getBugById(bid));
+		return "/tester/EditBug";
+	}
+	
+	@PostMapping("/bug/update")
+	public String updateBug(@ModelAttribute("bug") Bug bug)
+	{
+		Bug exbug=bugService.getBugById(bug.getId());
+		exbug.setBugTitle(bug.getBugTitle());
+		exbug.setBugDiscription(bug.getBugDiscription());
+		
+		bugService.updateBug(exbug);
 		return "redirect:/qa/bug/show";
 	}
 }

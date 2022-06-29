@@ -13,7 +13,7 @@ public interface BugService {
 	List<Bug> getAllBugs();
 	Bug saveBug(Bug bug);
 	Bug getBugById(int id);
-	List<Bug> getBugByTester(User user);
+	List<Bug> getBugByTester(User user,String Status);
 	Bug updateBug(Bug bug);
 	void deleteBugById(int id);
 	List<Bug> findAllByProject(Project project);
