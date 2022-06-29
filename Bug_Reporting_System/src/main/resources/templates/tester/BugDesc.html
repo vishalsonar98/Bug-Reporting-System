@@ -54,6 +54,13 @@
 								<p><a style="width: 100%;" th:href="@{/qa/bug/delete/{bid}(bid=${bug.id})}" class="btn btn-danger"  onclick="return confirm('Do you really want to delete Bug?');">Delete Bug</a></p>
 								</div>
 							</div>
+							<div class="row" style="margin-top: 20px;">
+								<div class="offset-lg-1 col-lg-10">
+									<p><a th:href="${bug.bugStatus}=='Developer'?'':@{/qa/bug/fixed/{bid}(bid=${bug.id})}" class="btn btn-primary" th:classappend="${bug.bugStatus}=='Developer'?'disabled':''" style="width: 100%;" >Fixed</a></p>
+								</div>
+								
+								
+							</div>
 						</div>
 					</div>
 				</div>

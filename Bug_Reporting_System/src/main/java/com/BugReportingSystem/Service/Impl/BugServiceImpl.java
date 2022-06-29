@@ -64,7 +64,7 @@ public class BugServiceImpl implements BugService {
 			
 			for (int i = 0; i < exbugs.size(); i++) {
 				Bug bug=exbugs.get(i);
-				if (bug.getBugStatus().contains(status)) {
+				if (bug.getBugStatus().contains(status)||bug.getBugStatus().contains("Tester")) {
 					bugs.add(bug);
 				}
 			}

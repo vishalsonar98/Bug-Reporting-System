@@ -22,13 +22,13 @@
 									<thead>
 										<tr>
 											<th>Project Name</th>
-											
-											
+											<th>Project Status</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr th:each="e : ${projects}">
 											<td class="py-1" style="height: 50px;"><span th:text="${e.projectName}" style="font-size: 15px;"></span></td>
+											<td><span th:text="${e.status}==1?'Completed':'In-Progress'"></span></td>
 											<!-- <td><a class="btn btn-primary" th:href="@{/developer/teams/viewmem/{id}(id=${e.id})}" ><i class="mdi mdi-eye"></i></a></td>
 											 -->
 											</tr>

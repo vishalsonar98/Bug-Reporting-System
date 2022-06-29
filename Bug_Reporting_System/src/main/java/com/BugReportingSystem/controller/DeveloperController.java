@@ -131,7 +131,7 @@ public class DeveloperController
 	public String submitBug(@PathVariable("bid") int bugid)
 	{
 		Bug bug=bugService.getBugById(bugid);
-		bug.setBugStatus("Fixed");
+		bug.setBugStatus("Tester");
 		
 		bugService.updateBug(bug);
 		return "redirect:/developer/bugs/show";

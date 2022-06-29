@@ -22,6 +22,7 @@
 									<thead>
 										<tr>
 											<th>Project Name</th>
+											<th>Project Status</th>
 											<th>Raise Bug</th>
 											
 										</tr>
@@ -29,7 +30,8 @@
 									<tbody>
 										<tr th:each="e:${projects}">
 											<td class="py-1" style="height: 50px;"><span  style="font-size: 15px;" th:text="${e.projectName}"></span></td>
-											<td><a class="btn btn-primary" th:href="@{/qa/project/raiseBug/{pid}(pid=${e.id})}" ><i class="mdi mdi-bug"></i></a></td>
+											<td><span th:text="${e.status}==1?'Completed':'In-Progress'"></span></td>
+											<td><a class="btn btn-primary" th:classappend="${e.status}==1?'disabled':''" th:href="${e.status}==1?'':@{/qa/project/raiseBug/{pid}(pid=${e.id})}" ><i class="mdi mdi-bug"></i></a></td>
 											
 											</tr>
 

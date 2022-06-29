@@ -31,7 +31,7 @@
 										<tr th:each="e : ${users}">
 											<td class="py-1"><span th:text="${e.firstName}"></span>&nbsp;<span th:text="${e.lastName}"></span></td>
 											<td><span th:text="${e.email}"></span></td>
-											<td><span th:text="${e.userTypeId.userType}"></span></td>
+											<td><span th:text="${e.userTypeId.userTypeId}==101?'Developer':'Tester'"></span></td>
 											
 											</tr>
 
