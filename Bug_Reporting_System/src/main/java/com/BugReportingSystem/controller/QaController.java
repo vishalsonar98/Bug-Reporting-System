@@ -242,6 +242,21 @@ public class QaController {
 		Bug bug=bugService.getBugById(bugid);
 		bug.setBugStatus("Fixed");
 		bugService.saveBug(bug);
-		return "redirect:/qa/bug/show";
+		return "redirect:/qa/bug/fixedBugs";
+	}
+	/**
+	 *  '/bug/Reassign/{bid}' Request Mapping.
+	 *  <p> this method reassigns the bug to the particular developer.
+	 *  @param	bugid id of bug
+	 * 	@return redirect's to '/qa/bug/fullInfo/{bid}' request.
+	 */
+	@GetMapping("/bug/Reassign/{bid}")
+	public String reassignBug(@PathVariable("bid") int bugid)
+	{
+		int bid=bugid;
+		Bug bug=bugService.getBugById(bugid);
+		bug.setBugStatus("Developer");
+		bugService.saveBug(bug);
+		return "redirect:/qa/bug/fullInfo/{bid}";
 	}
 }

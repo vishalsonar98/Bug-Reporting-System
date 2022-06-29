@@ -19,4 +19,5 @@ public interface BugService {
 	List<Bug> findAllByProject(Project project);
 	List<Bug> findAllByUser(User user);
 	List<Bug> getDeveloperStatusBug(List<Bug> bug);
+	int bugCount();
 }

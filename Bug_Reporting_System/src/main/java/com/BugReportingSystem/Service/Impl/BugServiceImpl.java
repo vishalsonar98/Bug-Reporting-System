@@ -107,4 +107,10 @@ public class BugServiceImpl implements BugService {
 		return null;
 	}
 
+	@Override
+	public int bugCount() {
+		
+		return (int) bugRepository.count();
+	}
+
 }

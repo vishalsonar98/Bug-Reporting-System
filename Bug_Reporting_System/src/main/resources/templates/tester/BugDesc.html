@@ -55,8 +55,11 @@
 								</div>
 							</div>
 							<div class="row" style="margin-top: 20px;">
-								<div class="offset-lg-1 col-lg-10">
-									<p><a th:href="${bug.bugStatus}=='Developer'?'':@{/qa/bug/fixed/{bid}(bid=${bug.id})}" class="btn btn-primary" th:classappend="${bug.bugStatus}=='Developer'?'disabled':''" style="width: 100%;" >Fixed</a></p>
+								<div class="offset-lg-1  col-lg-5">
+									<p><a th:href="${bug.bugStatus}=='Developer'?'':@{/qa/bug/Reassign/{bid}(bid=${bug.id})}" class="btn btn-warning" th:classappend="${bug.bugStatus}=='Developer'?'disabled':''" style="width: 100%;" onclick="return confirm('Do you really want to reassign a Bug?');">Reassign</a></p>
+								</div>
+								<div class="col-lg-5">
+									<p><a th:href="${bug.bugStatus}=='Developer'?'':@{/qa/bug/fixed/{bid}(bid=${bug.id})}" class="btn btn-primary" th:classappend="${bug.bugStatus}=='Developer'?'disabled':''" style="width: 100%;" onclick="return confirm('Do you really want to change status of Bug?');">Fixed</a></p>
 								</div>
 								
 								

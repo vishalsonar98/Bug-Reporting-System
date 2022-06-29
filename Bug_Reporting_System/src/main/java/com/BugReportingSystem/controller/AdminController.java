@@ -23,6 +23,7 @@ import com.BugReportingSystem.Entity.Project;
 import com.BugReportingSystem.Entity.Team;
 import com.BugReportingSystem.Entity.User;
 import com.BugReportingSystem.Entity.UserRole;
+import com.BugReportingSystem.Service.BugService;
 import com.BugReportingSystem.Service.ProjectService;
 import com.BugReportingSystem.Service.TeamService;
 import com.BugReportingSystem.Service.UserService;
@@ -56,8 +57,11 @@ public class AdminController {
 	 */
 	@Autowired
 	private ProjectService projectser;
-	
-	
+	/**
+	 * Object Ref. of BugService interface which provides various methods to perform crud operations.
+	 */
+	@Autowired
+	private BugService bugService;
 
 	/**
 	 * Request mappign for "/" 
@@ -103,6 +107,7 @@ public class AdminController {
 		model.addAttribute("empcount",ser.empCount());
 		model.addAttribute("teamCount",teamser.teamCount());
 		model.addAttribute("projectCount",projectser.ProjectCount());
+		model.addAttribute("bugCount",bugService.bugCount());
 		
 		return "Dashboard";
 	}
@@ -656,6 +661,13 @@ public class AdminController {
 		projectser.updateProject(exproject);
 		System.out.println(project);
 		return "redirect:/admin/currentprojects";
+	}
+	
+	@GetMapping("/bugs/viewAll")
+	public String viewBugs(Model model)
+	{
+		model.addAttribute("bugs",bugService.getAllBugs());
+		return "Bugs";
 	}
 }
 	
